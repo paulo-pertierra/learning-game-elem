@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Head, router, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Modal from '@/Components/Modal.vue';
@@ -8,6 +8,7 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import FileInput from '@/Components/FileInput.vue';
+import InputError from '@/Components/InputError.vue';
 
 
 const addingNewWorksheet = ref(false);
@@ -15,98 +16,93 @@ const addingNewWorksheet = ref(false);
 const addNewWorksheetModal = () => {
     addingNewWorksheet.value = true;
 };
+
 function addNewWorksheet() {
-    form.post('/worksheets/new');
-}
+    form.post('/worksheets');
+};
 
 const closeModal = () => {
     addingNewWorksheet.value = false;
-}
+};
 
 const form = useForm({
     title: "",
-    description: null,
+    description: "",
     file: null,
-    grade_level: null,
-    quarter: null
-})
+    grade_level: 1,
+    quarter: 1
+});
 </script>
 
 <template>
+    <div>
 
-    <Head title="Worksheets" />
+        <Head title="Worksheets" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheets</h2>
-        </template>
+        <AuthenticatedLayout>
+            <template #header>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheets</h2>
+            </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheets</h2>
-                    <PrimaryButton @click="addNewWorksheetModal">New Worksheet</PrimaryButton>
-                </div>
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        In this page, you can add worksheets for your students. To add a worksheet, you can click the
-                        add
-                        worksheet button, and upload a PDF document.
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheets</h2>
+                        <PrimaryButton @click="addNewWorksheetModal">New Worksheet</PrimaryButton>
+                    </div>
+                    <div v-if="!$page.props.worksheets" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 text-gray-900 dark:text-gray-100">
+                            In this page, you can add worksheets for your students. To add a worksheet, you can click
+                            the
+                            add
+                            worksheet button, and upload a PDF document.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-white grid grid-cols-3 gap-2 p-2">
+                            <Link :href="`/worksheets/${worksheet.id}`" v-for="worksheet in ($page.props.worksheets as any).data" class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end">
+                                <div class="p-8">
+                                    <h2 class="text-2xl">{{ worksheet.title }}</h2>
+                                    <p>{{ worksheet.description || 'No description provided.' }}</p>
+                                </div>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <Modal :show="addingNewWorksheet" :closable="true">
-            <form class="p-6" @submit.prevent="addNewWorksheet">
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Add New Worksheet
-                </h2>
-
-                <div class="my-4">
-                    <InputLabel>Worksheet Name</InputLabel>
-                    <TextInput
-                        id="worksheet-name"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="form.title!"
-                        required
-                        autofocus
-                    />
-                </div>
-
-                <div class="my-4">
-                    <InputLabel>Worksheet Description</InputLabel>
-                    <TextInput
-                        id="worksheet-description"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="form.description!"
-                        required
-                        autofocus
-                    />
-                </div>
-
-                <div class="my-4">
-                    <InputLabel>File Input</InputLabel>
-                    <FileInput
-                        @on-file-change="function(file) { console.log(file)}"
-                    />
-                </div>
-
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
-
-                    <PrimaryButton
-                        class="ms-3"
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                        @click="addNewWorksheet"
-                    >
+            <Modal :show="addingNewWorksheet">
+                <form class="p-6" @submit.prevent="addNewWorksheet">
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                         Add New Worksheet
-                    </PrimaryButton>
-                </div>
-            </form>
-        </Modal>
-    </AuthenticatedLayout>
+                    </h2>
+                    <div class="my-4">
+                        <InputLabel>Worksheet Name</InputLabel>
+                        <TextInput id="worksheet-name" type="text" class="mt-1 block w-full" v-model="form.title!"
+                            required autofocus />
+                            <InputError :message="$page.props.errors.title" />
+                    </div>
+                    <div class="my-4">
+                        <InputLabel>Worksheet Description</InputLabel>
+                        <TextInput id="worksheet-description" type="text" class="mt-1 block w-full"
+                            v-model="form.description!" required autofocus />
+                        <InputError :message="$page.props.errors.description" />
+                    </div>
+                    <div class="my-4">
+                        <InputLabel>File Input</InputLabel>
+                        <FileInput @on-file-change="function (file) { form.file = file }" />
+                        <InputError :message="$page.props.errors.file" />
+                    </div>
+                    <div class="mt-6 flex justify-end">
+                        <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                        <PrimaryButton class="ms-3" :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing">
+                            Add New Worksheet
+                        </PrimaryButton>
+                    </div>
+                </form>
+            </Modal>
+            {{ $page }}
+        </AuthenticatedLayout>
+    </div>
 </template>

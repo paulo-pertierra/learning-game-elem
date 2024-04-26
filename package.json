@@ -15,7 +15,7 @@
                 "database"
             ],
             "extensions": "js,jsx,ts,tsx,vue,css",
-            "delay": 2500,
+            "delay": 500,
             "runOnChangeOnly": true
         }
     },

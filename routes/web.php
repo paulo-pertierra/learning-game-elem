@@ -22,6 +22,10 @@ Route::get('/worksheets', function() {
     return Inertia::render('Worksheets');
 })->middleware(['auth', 'verified'])->name('worksheets');
 
+Route::post('/worksheets/add', function() {
+    
+})->name('worksheet.create');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

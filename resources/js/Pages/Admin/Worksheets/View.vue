@@ -14,6 +14,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import FileInput from '@/Components/FileInput.vue';
+import { watch } from 'vue';
 
 const page = usePage();
 
@@ -67,8 +68,23 @@ const form = useForm({
 });
 
 const updateWorksheet = () => {
-    form.patch(`/worksheets/${(page.props.worksheet as any).id}`)
+    form.post(`/worksheets/${(page.props.worksheet as any).id}`, {
+        onError: (error) => {
+            console.log(error);
+            
+        },
+        onSuccess: () => {
+            form.reset();
+            closeWorksheetEditor();
+            window.location.reload();
+       }
+    })
 }
+
+watch(form, () => {
+    console.log(form);
+    
+})
 </script>
 
 <template>

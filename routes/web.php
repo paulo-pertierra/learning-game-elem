@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/worksheets', [WorksheetController::class, 'store'])->name('worksheet.create');
     Route::get('/worksheets/{id}', [WorksheetController::class, 'show'])->name('worksheet.view');
     Route::get('/worksheets/{id}/download-file', [WorksheetController::class, 'download'])->name('worksheet.download');
-    Route::patch('/worksheets/{id}', [WorksheetController::class, 'update'])->name('worksheet.update');
+    Route::post('/worksheets/{id}', [WorksheetController::class, 'update'])->name('worksheet.update'); // It's actually a PATCH, just do it.
     Route::delete('/worksheets/{id}', [WorksheetController::class, 'destroy'])->name('worksheet.delete');
 });
 

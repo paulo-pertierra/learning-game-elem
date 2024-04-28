@@ -20,6 +20,12 @@ return new class extends Migration
             $table->integer('quarter');
             $table->timestamps();
         });
+
+        Schema::table('videos', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained(
+                table: 'users', indexName: 'videos_user_id'
+            );
+        });
     }
 
     /**

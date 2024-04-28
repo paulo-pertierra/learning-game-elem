@@ -35,6 +35,15 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('worksheets')" :active="route().current('worksheets')">
                                     Worksheets
                                 </NavLink>
+                                <NavLink :href="route('games')" :active="route().current('games')">
+                                    Games
+                                </NavLink>
+                                <NavLink :href="route('videos')" :active="route().current('videos')">
+                                    Videos
+                                </NavLink>
+                                <NavLink :href="route('printables')" :active="route().current('printables')">
+                                    Printables
+                                </NavLink>
                             </div>
                         </div>
 
@@ -48,7 +57,7 @@ const showingNavigationDropdown = ref(false);
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {{ $page.props.auth.user.name }}
+                                                {{ $page.props.auth.user.name }} ({{ $page.props.auth.user.role }})
 
                                                 <svg
                                                     class="ms-2 -me-0.5 h-4 w-4"
@@ -120,8 +129,26 @@ const showingNavigationDropdown = ref(false);
                     </div>
 
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('worksheets')" :active="route().current('worksheets')">
                             Worksheets
+                        </ResponsiveNavLink>
+                    </div>
+
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('games')" :active="route().current('games')">
+                            Games
+                        </ResponsiveNavLink>
+                    </div>
+
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('videos')" :active="route().current('videos')">
+                            Videos
+                        </ResponsiveNavLink>
+                    </div>
+
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('printables')" :active="route().current('printables')">
+                            Printables
                         </ResponsiveNavLink>
                     </div>
 

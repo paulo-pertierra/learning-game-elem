@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Worksheet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class WorksheetController extends Controller
 {
@@ -13,7 +15,18 @@ class WorksheetController extends Controller
      */
     public function index()
     {
-        //
+        $worksheets = Worksheet::paginate(15);
+
+        if (Auth::user()->role === 'admin') 
+            return Inertia::render('Admin/Worksheets', [
+                "worksheets" => $worksheets
+            ]);
+
+        else 
+            return Inertia::render('Student/Worksheets',
+            [
+                "worksheets" => $worksheets
+            ]);
     }
 
     /**
@@ -27,8 +40,9 @@ class WorksheetController extends Controller
     {
         $request->validate([
             'title'=> ['required', 'max:25'],
-            'grade_level' => ['required'],
-            'quarter' => ['required']
+            'file' => ['required'],
+            'grade_level' => ['required', 'numeric', 'min:1', 'max:3'],
+            'quarter' => ['required', 'numeric', 'min:1', 'max:4']
         ]);
 
         $worksheetFile = $request->file('file');
@@ -49,7 +63,16 @@ class WorksheetController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $worksheet = Worksheet::findOrFail($id);
+        
+        if (Auth::user()->role === 'admin') 
+            return Inertia::render('Admin/Worksheets/View', [
+                'worksheet' => $worksheet
+            ]);
+        else 
+            return Inertia::render('Student/Worksheets/View', [
+                'worksheet' => $worksheet
+            ]);
     }
 
     /**

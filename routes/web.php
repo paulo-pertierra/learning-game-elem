@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorksheetController;
 use App\Models\Worksheet;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,18 +19,37 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    if (Auth::user()->role === 'admin')
+        return Inertia::render('Admin/Dashboard');
+    else
+        return Inertia::render('Student/Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/worksheets', function() {
-    
-    $worksheets = Worksheet::paginate(15);
-    
-    return Inertia::render('Worksheets', [
-        'worksheets' => $worksheets
-    ]);
+Route::get('/worksheets', [WorksheetController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('worksheets');
 
-})->middleware(['auth', 'verified'])->name('worksheets');
+Route::get('/games', [GameController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('games');
+
+// Route::get('/games', function() {
+//     
+// })->middleware(['auth', 'verified'])->name('games');
+
+Route::get('/videos', function() {
+    if (Auth::user()->role === 'admin')
+        return Inertia::render('Admin/Videos');
+    else
+        return Inertia::render('Student/Videos');
+})->middleware(['auth', 'verified'])->name('videos');
+
+Route::get('/printables', function() {
+    if (Auth::user()->role === 'admin')
+        return Inertia::render('Admin/Printables');
+    else
+        return Inertia::render('Student/Printables');
+})->middleware(['auth', 'verified'])->name('printables');
 
 Route::post('/worksheets/add', function() {
     
@@ -40,14 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('/worksheets', [WorksheetController::class, 'store'])->name('worksheet.create');
-    Route::get('/worksheets/{id}', function(string $id) {
-        $worksheet = Worksheet::findOrFail($id);
-        return Inertia::render('Worksheets/ById', [
-            'worksheet' => $worksheet
-        ]);
-    });
-
-    Route::get('/worksheets/{id}/download-file', [WorksheetController::class, 'download']);
+    Route::get('/worksheets/{id}', [WorksheetController::class, 'show'])->name('worksheet.view');
+    Route::get('/worksheets/{id}/download-file', [WorksheetController::class, 'download'])->name('worksheet.download');
 });
 
 require __DIR__.'/auth.php';

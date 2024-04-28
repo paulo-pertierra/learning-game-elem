@@ -41,6 +41,10 @@ watch(form, () => {
     console.log(form);
     
 })
+
+const page = usePage();
+
+const worksheets = page.props.worksheets as any;
 </script>
 
 <template>
@@ -69,12 +73,25 @@ watch(form, () => {
                     </div>
                     <div>
                         <div class="text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <Link :href="`/worksheets/${worksheet.id}`" v-for="worksheet in ($page.props.worksheets as any).data" class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end">
+                            <Link :href="`/worksheets/${worksheet.id}`" v-for="worksheet in worksheets.data" class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end">
                                 <div class="p-8">
                                     <h2 class="text-2xl">{{ worksheet.title }}</h2>
                                     <p>{{ worksheet.description || 'No description provided.' }}</p>
                                 </div>
                             </Link>
+                            <div class="md:col-span-2 lg:col-span-3 grid grid-cols-5 gap-2 mx-auto items-center justify-center">
+                                <Link class="text-center border rounded-lg p-2" :href="worksheets.path + '?page=1'" v-if="worksheets.current_page != 1">
+                                    1 ...
+                                </Link>
+                                <div v-else></div>
+                                <Link v-if="worksheets.prev_page_url" :href="worksheets.prev_page_url" class="text-center border rounded-lg p-2">Prev</Link>
+                                <div v-else></div>
+                                <span class="text-center">{{ worksheets.current_page }}</span>
+                                <Link v-if="worksheets.next_page_url" :href="worksheets.next_page_url" class="text-center border rounded-lg p-2">Next</Link>
+                                <Link  :href="worksheets.path + `?page=${worksheets.last_page}`" v-if="worksheets.current_page != worksheets.last_page" class="text-center border rounded-lg p-2">
+                                    ... {{ worksheets.last_page }}
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

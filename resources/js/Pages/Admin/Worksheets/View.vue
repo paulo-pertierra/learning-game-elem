@@ -10,6 +10,10 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import { ref } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import DangerButton from '@/Components/DangerButton.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import TextInput from '@/Components/TextInput.vue';
+import InputError from '@/Components/InputError.vue';
+import FileInput from '@/Components/FileInput.vue';
 
 const page = usePage();
 
@@ -28,7 +32,7 @@ const confirmWorksheetDeletion = () => {
     confirmingWorksheetDeletion.value = true;
 }
 
-const closeModal = () => {
+const closeWorksheetDeletionModal = () => {
     confirmingWorksheetDeletion.value = false;
 }
 
@@ -42,6 +46,28 @@ const deleteWorksheet = () => {
             window.history.back();
         }
     });
+}
+
+const showingWorksheetEditor = ref(false);
+
+const showWorksheetEditor = () => {
+    showingWorksheetEditor.value = true;
+}
+
+const closeWorksheetEditor = () => {
+    showingWorksheetEditor.value = false;
+}
+
+const form = useForm({
+    title: (page.props.worksheet as any).title,
+    description: (page.props.worksheet as any).description,
+    file: (page.props.worksheet as any).file,
+    grade_level: (page.props.worksheet as any).grade_level,
+    quarter: (page.props.worksheet as any).quarter
+});
+
+const updateWorksheet = () => {
+    form.patch(`/worksheets/${(page.props.worksheet as any).id}`)
 }
 </script>
 
@@ -80,7 +106,7 @@ const deleteWorksheet = () => {
                                 <VerticalEllipsis class="h-8" />
                             </template>
                             <template #content>
-                                <DropdownLink href="">Edit</DropdownLink>
+                                <DropdownLink @click="showWorksheetEditor">Edit</DropdownLink>
                                 <DropdownLink @click="confirmWorksheetDeletion">Delete</DropdownLink>
                             </template>
                         </Dropdown>
@@ -88,19 +114,14 @@ const deleteWorksheet = () => {
                 </div>
             </div>
         </div>
-        <Modal :show="confirmingWorksheetDeletion" @close="closeModal">
+        <Modal :show="confirmingWorksheetDeletion" @close="closeWorksheetDeletionModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Are you sure you want to delete your account?
+                    Are you sure you want to delete this worksheet?
                 </h2>
 
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Once your account is deleted, all of its resources and data will be permanently deleted. Please
-                    enter your password to confirm you would like to permanently delete your account.
-                </p>
-
                 <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    <SecondaryButton @click="closeWorksheetDeletionModal"> Cancel </SecondaryButton>
 
                     <DangerButton
                         class="ms-3"
@@ -108,10 +129,60 @@ const deleteWorksheet = () => {
                         :disabled="deleteProcessing"
                         @click="deleteWorksheet"
                     >
-                        Delete Account
+                        Delete Worksheet
                     </DangerButton>
                 </div>
             </div>
+        </Modal>
+        <Modal :show="showingWorksheetEditor">
+            <form class="p-6" @submit.prevent="updateWorksheet">
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                        Add New Worksheet
+                    </h2>
+                    <div class="my-4">
+                        <InputLabel>Worksheet Name</InputLabel>
+                        <TextInput id="worksheet-name" type="text" class="mt-1 block w-full" v-model="form.title!"
+                            required autofocus />
+                            <InputError :message="$page.props.errors.title" />
+                    </div>
+                    <div class="my-4">
+                        <InputLabel>Worksheet Description</InputLabel>
+                        <TextInput id="worksheet-description" type="text" class="mt-1 block w-full"
+                            v-model="form.description!" required autofocus />
+                        <InputError :message="$page.props.errors.description" />
+                    </div>
+                    <div class="my-4 ">
+                        <InputLabel>Grade Level</InputLabel>
+                        <div class="grid grid-cols-3 gap-2">
+                            <SecondaryButton :active="form.grade_level === 1" @click="form.grade_level = 1">Grade 1</SecondaryButton>
+                            <SecondaryButton :active="form.grade_level === 2" @click="form.grade_level = 2">Grade 2</SecondaryButton>
+                            <SecondaryButton :active="form.grade_level === 3" @click="form.grade_level = 3">Grade 3</SecondaryButton>
+                            <InputError class="col-span-3" :message="$page.props.errors.grade_level ? 'Grade level is required.' : ''" />
+                        </div>
+                    </div>
+                    <div class="my-4 ">
+                        <InputLabel>Quarter</InputLabel>
+                        <div class="grid grid-cols-4 gap-2">
+                            <SecondaryButton :active="form.quarter === 1" @click="form.quarter = 1">Q1</SecondaryButton>
+                            <SecondaryButton :active="form.quarter === 2" @click="form.quarter = 2">Q2</SecondaryButton>
+                            <SecondaryButton :active="form.quarter === 3" @click="form.quarter = 3">Q3</SecondaryButton>
+                            <SecondaryButton :active="form.quarter === 4" @click="form.quarter = 4">Q4</SecondaryButton>
+                            <InputError class="col-span-4" :message="$page.props.errors.quarter ? 'Quarter for this material is required.' : ''" />
+                        </div>
+                    </div>
+                    <div class="my-4">
+                        <InputLabel>File Input</InputLabel>
+                        <FileInput @on-file-change="function (file: any) { form.file = file }" />
+                        <InputError :message="$page.props.errors.file" />
+                    </div>
+                    <div class="mt-6 flex justify-end">
+                        <SecondaryButton @click="closeWorksheetEditor"> Cancel </SecondaryButton>
+                        <PrimaryButton class="ms-3" :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing">
+                            Add New Worksheet
+                        </PrimaryButton>
+                    </div>
+                </form>
         </Modal>
     </AuthenticatedLayout>
 </template>

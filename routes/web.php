@@ -25,10 +25,6 @@ Route::get('/dashboard', function () {
         return Inertia::render('Student/Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/worksheets', [WorksheetController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('worksheets');
-
 Route::get('/games', [GameController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('games');
@@ -60,10 +56,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/worksheets', [WorksheetController::class, 'index'])->name('worksheets');
     Route::post('/worksheets', [WorksheetController::class, 'store'])->name('worksheet.create');
     Route::get('/worksheets/{id}', [WorksheetController::class, 'show'])->name('worksheet.view');
     Route::get('/worksheets/{id}/download-file', [WorksheetController::class, 'download'])->name('worksheet.download');
-    Route::delete('worksheets/{id}', [WorksheetController::class, 'destroy'])->name('worksheet.delete');
+    Route::patch('/worksheets/{id}', [WorksheetController::class, 'update'])->name('worksheet.update');
+    Route::delete('/worksheets/{id}', [WorksheetController::class, 'destroy'])->name('worksheet.delete');
 });
 
 require __DIR__.'/auth.php';

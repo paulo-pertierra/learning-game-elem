@@ -3,7 +3,7 @@ import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Modal from '@/Components/Modal.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -36,6 +36,11 @@ const form = useForm({
     grade_level: 0,
     quarter: 0
 });
+
+watch(form, () => {
+    console.log(form);
+    
+})
 </script>
 
 <template>

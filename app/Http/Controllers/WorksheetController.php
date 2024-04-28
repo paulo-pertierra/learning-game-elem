@@ -88,7 +88,30 @@ class WorksheetController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $worksheet = Worksheet::find($id);
+
+        $request->validate([
+            'title'=> ['required', 'max:25'],
+            'grade_level' => ['required', 'numeric', 'min:1', 'max:3'],
+            'quarter' => ['required', 'numeric', 'min:1', 'max:4']
+        ]);
+
+        $worksheet->title = $request->title;
+        $worksheet->description = $request->description;
+        $worksheet->grade_level = $request->grade_level;
+        $worksheet->quarter = $request->quarter;
+
+        $worksheet->save();
+
+        $worksheetFile = $request->file('file');
+        
+        if (is_null($worksheetFile)) return;
+        $path = $worksheetFile->store('worksheets');
+        
+        $worksheet->file = $path;
+        $worksheet->save();
+
     }
 
     /**

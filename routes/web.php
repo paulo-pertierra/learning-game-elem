@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/worksheets', [WorksheetController::class, 'store'])->name('worksheet.create');
     Route::get('/worksheets/{id}', [WorksheetController::class, 'show'])->name('worksheet.view');
     Route::get('/worksheets/{id}/download-file', [WorksheetController::class, 'download'])->name('worksheet.download');
+    Route::delete('worksheets/{id}', [WorksheetController::class, 'destroy'])->name('worksheet.delete');
 });
 
 require __DIR__.'/auth.php';

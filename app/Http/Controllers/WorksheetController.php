@@ -96,7 +96,7 @@ class WorksheetController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return Worksheet::destroy($id);
     }
 
     public function download(string $id) {

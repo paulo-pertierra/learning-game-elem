@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VideoController;
 use App\Http\Controllers\WorksheetController;
 use App\Models\Worksheet;
 use Illuminate\Foundation\Application;
@@ -33,13 +34,6 @@ Route::get('/games', [GameController::class, 'index'])
 //     
 // })->middleware(['auth', 'verified'])->name('games');
 
-Route::get('/videos', function() {
-    if (Auth::user()->role === 'admin')
-        return Inertia::render('Admin/Videos');
-    else
-        return Inertia::render('Student/Videos');
-})->middleware(['auth', 'verified'])->name('videos');
-
 Route::get('/printables', function() {
     if (Auth::user()->role === 'admin')
         return Inertia::render('Admin/Printables');
@@ -55,13 +49,31 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-    Route::get('/worksheets', [WorksheetController::class, 'index'])->name('worksheets');
-    Route::post('/worksheets', [WorksheetController::class, 'store'])->name('worksheet.create');
-    Route::get('/worksheets/{id}', [WorksheetController::class, 'show'])->name('worksheet.view');
-    Route::get('/worksheets/{id}/download-file', [WorksheetController::class, 'download'])->name('worksheet.download');
-    Route::post('/worksheets/{id}', [WorksheetController::class, 'update'])->name('worksheet.update'); // It's actually a PATCH, just do it.
-    Route::delete('/worksheets/{id}', [WorksheetController::class, 'destroy'])->name('worksheet.delete');
+// Worksheets Routegroup
+
+Route::prefix('/worksheets')->group(function() {
+    Route::get('/', [WorksheetController::class, 'index'])->name('worksheets');
+    Route::get('/{id}', [WorksheetController::class, 'show'])->name('worksheet.view');
+    Route::get('/{id}/download-file', [WorksheetController::class, 'download'])->name('worksheet.download');
+
+    Route::middleware('role:admin', 'auth')->group(function() {
+        Route::post('/', [WorksheetController::class, 'store'])->name('worksheet.create');
+        Route::post('/{id}', [WorksheetController::class, 'update'])->name('worksheet.update'); // PATCH
+        Route::delete('/{id}', [WorksheetController::class, 'destroy'])->name('worksheet.delete');
+});
+});
+
+Route::prefix('/videos')->group(function() {
+    Route::get('/', [VideoController::class, 'index'])->name('videos');
+    Route::get('/{id}', [VideoController::class, 'show'])->name('videos.view');
+
+    Route::middleware('role:admin', 'auth')->group(function() {
+        Route::post('/', [VideoController::class, 'store'])->name('videos.create');
+        Route::post('/{id}'); // PATCH
+        Route::delete('/{id}');
+    });
 });
 
 require __DIR__.'/auth.php';

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class VideoController extends Controller
 {
@@ -11,7 +14,18 @@ class VideoController extends Controller
      */
     public function index()
     {
-        //
+        $videos = Video::orderBy('created_at', 'DESC')->paginate(6);
+
+        if (Auth::user()->role === 'admin') 
+            return Inertia::render('Admin/Videos', [
+                "videos" => $videos
+            ]);
+
+        else 
+            return Inertia::render('Student/Videos',
+            [
+                "videos" => $videos
+            ]);
     }
 
     /**
@@ -26,14 +40,28 @@ class VideoController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        $request->validate([
+            'link' => ['required'],
+            'title' => ['required', 'max:50'],
+            'grade_level' => ['required', 'numeric', 'min:1', 'max:3'],
+            'quarter' => ['required', 'numeric', 'min:1', 'max:4']
+        ]);
+
+        Video::create([
+            'link' => $request->link,
+            'title' => $request->title,
+            'description' => $request->description,
+            'grade_level' => $request->grade_level,
+            'quarter' => $request->quarter,
+            'user_id' => Auth::user()->id
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Video $video)
     {
         //
     }
@@ -41,7 +69,7 @@ class VideoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Video $video)
     {
         //
     }
@@ -49,7 +77,7 @@ class VideoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Video $video)
     {
         //
     }
@@ -57,7 +85,7 @@ class VideoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Video $video)
     {
         //
     }

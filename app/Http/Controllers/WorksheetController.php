@@ -15,7 +15,7 @@ class WorksheetController extends Controller
      */
     public function index()
     {
-        $worksheets = Worksheet::paginate(6);
+        $worksheets = Worksheet::orderBy('created_at', 'DESC')->paginate(6);
 
         if (Auth::user()->role === 'admin') 
             return Inertia::render('Admin/Worksheets', [

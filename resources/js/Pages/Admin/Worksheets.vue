@@ -64,7 +64,7 @@ const worksheets = page.props.worksheets as any;
                         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheets List</h2>
                         <PrimaryButton @click="addNewWorksheetModal">New Worksheet</PrimaryButton>
                     </div>
-                    <div v-if="!$page.props.worksheets" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div v-if="!($page.props.worksheets as any).data.length" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900 dark:text-gray-100">
                             In this page, you can add worksheets for your students. To add a worksheet, you can click
                             the
@@ -72,7 +72,7 @@ const worksheets = page.props.worksheets as any;
                             worksheet button, and upload a PDF document.
                         </div>
                     </div>
-                    <div>
+                    <div v-else>
                         <div class="text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             <Link :href="`/worksheets/${worksheet.id}`" v-for="worksheet in worksheets.data" class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end">
                                 <div class="p-8">

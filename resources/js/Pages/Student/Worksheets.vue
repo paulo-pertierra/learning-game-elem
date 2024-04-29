@@ -3,14 +3,13 @@ import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Modal from '@/Components/Modal.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import FileInput from '@/Components/FileInput.vue';
 import InputError from '@/Components/InputError.vue';
-
-const page = usePage();
+import Pagination from '@/Components/Pagination.vue';
 
 const addingNewWorksheet = ref(false);
 
@@ -38,6 +37,15 @@ const form = useForm({
     grade_level: 0,
     quarter: 0
 });
+
+watch(form, () => {
+    console.log(form);
+    
+})
+
+const page = usePage();
+
+const worksheets = page.props.worksheets as any;
 </script>
 
 <template>
@@ -51,12 +59,12 @@ const form = useForm({
             </template>
 
             <div class="py-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheets List</h2>
                         <PrimaryButton @click="addNewWorksheetModal">New Worksheet</PrimaryButton>
                     </div>
-                    <div v-if="!$page.props.worksheets" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div v-if="(!$page.props.worksheets as any).data.length" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900 dark:text-gray-100">
                             In this page, you can add worksheets for your students. To add a worksheet, you can click
                             the
@@ -64,14 +72,17 @@ const form = useForm({
                             worksheet button, and upload a PDF document.
                         </div>
                     </div>
-                    <div>
-                        <div class="text-white grid grid-cols-3 gap-8">
-                            <Link :href="`/worksheets/${worksheet.id}`" v-for="worksheet in ($page.props.worksheets as any).data" class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end">
+                    <div v-else>
+                        <div class="text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <Link :href="`/worksheets/${worksheet.id}`" v-for="worksheet in worksheets.data" class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end">
                                 <div class="p-8">
                                     <h2 class="text-2xl">{{ worksheet.title }}</h2>
                                     <p>{{ worksheet.description || 'No description provided.' }}</p>
                                 </div>
                             </Link>
+                            <div class="md:col-span-2 lg:col-span-3 grid grid-cols-5 gap-2 mx-auto items-center justify-center">
+                                <Pagination :resource="worksheets" />
+                            </div>
                         </div>
                     </div>
                 </div>

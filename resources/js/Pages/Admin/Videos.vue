@@ -1,10 +1,137 @@
 <script lang="ts" setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue"
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import Modal from "@/Components/Modal.vue";
+import Pagination from "@/Components/Pagination.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { Link, useForm, usePage } from "@inertiajs/vue3";
+import { ref } from "vue";
+
+const page = usePage();
+
+const videos = page.props.videos as any;
+
+const addingNewVideo = ref(false);
+
+const addNewVideoModal = () => {
+    addingNewVideo.value = true;
+}
+
+const closeModal = () => {
+    addingNewVideo.value = false;
+}
+
+const form = useForm({
+    title: "",
+    link: "",
+    description: "",
+    grade_level: 0,
+    quarter: 0
+})
+
+const addNewVideo = () => {
+    form.post('/videos');
+}
+
 </script>
 <template>
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Videos</h2>
         </template>
+
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Videos List</h2>
+                    <PrimaryButton @click="addNewVideoModal">New Video</PrimaryButton>
+                </div>
+                <div v-if="!($page.props.videos as any).data.length"
+                    class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        In this page, you can add videos for your students. To add a video, you can click the new video
+                        button,
+                        and paste the YouTube link ID.
+                    </div>
+                </div>
+                <div v-else>
+                    <div class="text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <Link :href="`/worksheets/${video.id}`" v-for="video in videos.data"
+                            class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end">
+                        <div class="p-8">
+                            <h2 class="text-2xl">{{ video.title }}</h2>
+                            <p>{{ video.description || 'No description provided.' }}</p>
+                        </div>
+                        </Link>
+                        <div
+                            class="md:col-span-2 lg:col-span-3 grid grid-cols-5 gap-2 mx-auto items-center justify-center">
+                            <Pagination :resource="videos" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ $page.props }}
+
+        <Modal :show="addingNewVideo">
+            <form class="p-6" @submit.prevent="addNewVideo">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    Add New Video
+                </h2>
+                <div class="my-4">
+                    <InputLabel>Video Name</InputLabel>
+                    <TextInput id="worksheet-name" type="text" class="mt-1 block w-full" v-model="form.title!" required
+                        autofocus />
+                    <InputError :message="$page.props.errors.title" />
+                </div>
+                <div class="my-4">
+                    <InputLabel>Video Description</InputLabel>
+                    <TextInput id="worksheet-description" type="text" class="mt-1 block w-full"
+                        v-model="form.description!" required autofocus />
+                    <InputError :message="$page.props.errors.description" />
+                </div>
+                <div class="my-4 ">
+                    <InputLabel>Grade Level</InputLabel>
+                    <div class="grid grid-cols-3 gap-2">
+                        <SecondaryButton :active="form.grade_level === 1" @click="form.grade_level = 1">Grade 1
+                        </SecondaryButton>
+                        <SecondaryButton :active="form.grade_level === 2" @click="form.grade_level = 2">Grade 2
+                        </SecondaryButton>
+                        <SecondaryButton :active="form.grade_level === 3" @click="form.grade_level = 3">Grade 3
+                        </SecondaryButton>
+                        <InputError class="col-span-3"
+                            :message="$page.props.errors.grade_level ? 'Grade level is required.' : ''" />
+                    </div>
+                </div>
+                <div class="my-4 ">
+                    <InputLabel>Quarter</InputLabel>
+                    <div class="grid grid-cols-4 gap-2">
+                        <SecondaryButton :active="form.quarter === 1" @click="form.quarter = 1">Q1</SecondaryButton>
+                        <SecondaryButton :active="form.quarter === 2" @click="form.quarter = 2">Q2</SecondaryButton>
+                        <SecondaryButton :active="form.quarter === 3" @click="form.quarter = 3">Q3</SecondaryButton>
+                        <SecondaryButton :active="form.quarter === 4" @click="form.quarter = 4">Q4</SecondaryButton>
+                        <InputError class="col-span-4"
+                            :message="$page.props.errors.quarter ? 'Quarter for this material is required.' : ''" />
+                    </div>
+                </div>
+                <div class="my-4">
+                    <InputLabel>Video ID (YouTube)</InputLabel>
+                    <TextInput id="worksheet-description" type="text" class="mt-1 block w-full" v-model="form.link!"
+                        required autofocus />
+                    <InputError :message="$page.props.errors.description" />
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    <PrimaryButton class="ms-3" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                        Link Video
+                    </PrimaryButton>
+                </div>
+            </form>
+        </Modal>
+
     </AuthenticatedLayout>
 </template>

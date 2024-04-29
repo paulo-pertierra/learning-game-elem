@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Worksheet;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -115,7 +117,8 @@ class WorksheetController extends Controller
      */
     public function destroy(string $id)
     {
-        return Worksheet::destroy($id);
+        Worksheet::destroy($id);
+        return redirect()->route('worksheets');
     }
 
     public function download(string $id) {

@@ -56,6 +56,8 @@ class VideoController extends Controller
             'quarter' => $request->quarter,
             'user_id' => Auth::user()->id
         ]);
+
+        return redirect()->to('/videos');
     }
 
     /**
@@ -86,16 +88,33 @@ class VideoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Video $video)
+    public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'link' => ['required'],
+            'title' => ['required', 'max:50'],
+            'grade_level' => ['required', 'numeric', 'min:1', 'max:3'],
+            'quarter' => ['required', 'numeric', 'min:1', 'max:4']
+        ]);
+
+        $video = Video::findOrFail($id);
+
+        $video->link = $request->link;
+        $video->title = $request->title;
+        $video->description = $request->description;
+        $video->grade_level = $request->grade_level;
+        $video->quarter = $request->quarter;
+
+        $video->save();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Video $video)
+    public function destroy(string $id)
     {
-        //
+        Video::destroy($id);
+
+        return redirect()->route('videos');
     }
 }

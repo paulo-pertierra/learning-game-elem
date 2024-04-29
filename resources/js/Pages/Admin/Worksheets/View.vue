@@ -42,9 +42,8 @@ const deleteWorksheet = () => {
     deleteProcessing.value = true;
 
     router.delete(`/worksheets/${(page.props.worksheet as any).id}`, {
-        onFinish: () => {
+        onSuccess: () => {
             deleteProcessing.value = false;
-            window.history.back();
         }
     });
 }

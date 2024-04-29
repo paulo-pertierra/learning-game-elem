@@ -7,8 +7,13 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Link, useForm, usePage } from "@inertiajs/vue3";
+import { Link, useForm, usePage, Head } from "@inertiajs/vue3";
+import { onMounted } from "vue";
 import { ref } from "vue";
+
+onMounted(() => {
+
+})
 
 const page = usePage();
 
@@ -33,11 +38,16 @@ const form = useForm({
 })
 
 const addNewVideo = () => {
-    form.post('/videos');
+    form.post('/videos', {
+        onSuccess: _ => {
+            closeModal();
+        }
+    });
 }
 
 </script>
 <template>
+    <Head title="Videos List" />
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Videos</h2>
@@ -60,11 +70,10 @@ const addNewVideo = () => {
                 <div v-else>
                     <div class="text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <Link :href="`/videos/${video.id}`" v-for="video in videos.data"
-                            class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end relative overflow-hidden">
-                            <img :src="`https://img.youtube.com/vi/${video.link}/0.jpg`" class="object-cover h-64 w-full border brightness-50" alt="">
-                            <div class="p-4 absolute bg-black/50">
+                            class="border border-gray-500 dark:text-gray-200 aspect-video rounded-2xl flex items-end relative overflow-hidden">
+                            <img :src="`https://img.youtube.com/vi/${video.link}/0.jpg`" class="object-cover h-full w-full border brightness-75" alt="">
+                            <div class="p-4 absolute bg-black/75">
                                 <h2 class="text-2xl">{{ video.title }}</h2>
-                                <p>{{ video.description || 'No description provided.' }}</p>
                             </div>
                         </Link>
                         <div

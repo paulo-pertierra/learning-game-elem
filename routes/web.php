@@ -71,8 +71,8 @@ Route::prefix('/videos')->group(function() {
 
     Route::middleware('role:admin', 'auth')->group(function() {
         Route::post('/', [VideoController::class, 'store'])->name('videos.create');
-        Route::post('/{id}'); // PATCH
-        Route::delete('/{id}');
+        Route::post('/{id}', [VideoController::class, 'update'])->name('videos.update'); // PATCH
+        Route::delete('/{id}', [VideoController::class, 'destroy'])->name('videos.delete');
     });
 });
 

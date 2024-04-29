@@ -59,12 +59,13 @@ const addNewVideo = () => {
                 </div>
                 <div v-else>
                     <div class="text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <Link :href="`/worksheets/${video.id}`" v-for="video in videos.data"
-                            class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end">
-                        <div class="p-8">
-                            <h2 class="text-2xl">{{ video.title }}</h2>
-                            <p>{{ video.description || 'No description provided.' }}</p>
-                        </div>
+                        <Link :href="`/videos/${video.id}`" v-for="video in videos.data"
+                            class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end relative overflow-hidden">
+                            <img :src="`https://img.youtube.com/vi/${video.link}/0.jpg`" class="object-cover h-64 w-full border brightness-50" alt="">
+                            <div class="p-4 absolute bg-black/50">
+                                <h2 class="text-2xl">{{ video.title }}</h2>
+                                <p>{{ video.description || 'No description provided.' }}</p>
+                            </div>
                         </Link>
                         <div
                             class="md:col-span-2 lg:col-span-3 grid grid-cols-5 gap-2 mx-auto items-center justify-center">
@@ -74,8 +75,6 @@ const addNewVideo = () => {
                 </div>
             </div>
         </div>
-
-        {{ $page.props }}
 
         <Modal :show="addingNewVideo">
             <form class="p-6" @submit.prevent="addNewVideo">

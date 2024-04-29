@@ -61,9 +61,18 @@ class VideoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Video $video)
+    public function show(String $id)
     {
-        //
+        $video = Video::findOrFail($id);
+        
+        if (Auth::user()->role === 'admin') 
+            return Inertia::render('Admin/Videos/View', [
+                'video' => $video
+            ]);
+        else 
+            return Inertia::render('Student/Videos/View', [
+                'video' => $video
+            ]);
     }
 
     /**

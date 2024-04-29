@@ -73,7 +73,7 @@ const worksheets = page.props.worksheets as any;
                         </div>
                     </div>
                     <div v-else>
-                        <div class="text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="text-gray-900 dark:text-gray-100 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             <Link :href="`/worksheets/${worksheet.id}`" v-for="worksheet in worksheets.data" class="border border-gray-500 dark:text-gray-200 h-64 rounded-2xl flex items-end">
                                 <div class="p-8">
                                     <h2 class="text-2xl">{{ worksheet.title }}</h2>

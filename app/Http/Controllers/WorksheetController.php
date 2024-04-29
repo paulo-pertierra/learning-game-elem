@@ -118,14 +118,21 @@ class WorksheetController extends Controller
     public function destroy(string $id)
     {
         Worksheet::destroy($id);
+        
         return redirect()->route('worksheets');
     }
 
-    public function download(string $id) {
-        
+    public function download(string $id) 
+    {    
         $worksheet = Worksheet::findOrFail($id);
         
         return Storage::download($worksheet->file);
- 
+    }
+
+    public function preview(string $id)
+    {
+        $worksheet = Worksheet::findOrFail($id);
+
+        return Storage::response($worksheet->file);
     }
 }

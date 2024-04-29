@@ -57,6 +57,7 @@ Route::prefix('/worksheets')->group(function() {
     Route::get('/', [WorksheetController::class, 'index'])->name('worksheets');
     Route::get('/{id}', [WorksheetController::class, 'show'])->name('worksheet.view');
     Route::get('/{id}/download-file', [WorksheetController::class, 'download'])->name('worksheet.download');
+    Route::get('/{id}/view', [WorksheetController::class, 'preview'])->name('worksheet.preview');
 
     Route::middleware('role:admin', 'auth')->group(function() {
         Route::post('/', [WorksheetController::class, 'store'])->name('worksheet.create');

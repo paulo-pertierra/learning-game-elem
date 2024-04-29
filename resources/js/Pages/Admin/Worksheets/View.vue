@@ -18,12 +18,17 @@ import { watch } from 'vue';
 
 const page = usePage();
 
-function downloadFile() {
+const downloadFile = () => {
     const url = `/worksheets/${(page.props.worksheet as any).id}/download-file`;
     window.location.href = url;
 }
 
-function goBack() {
+const previewFile = () => {
+    const url = `/worksheets/${(page.props.worksheet as any).id}/view`;
+    window.location.href = url;
+}
+
+const goBack = () => {
     window.history.back();
 }
 
@@ -113,7 +118,8 @@ watch(form, () => {
                         <h4>
                             {{ (page.props.worksheet as any).description }}
                         </h4>
-                        <PrimaryButton class="block bottom-0 mt-8" @click="downloadFile">Download File</PrimaryButton>
+                        <PrimaryButton class="block bottom-0 mt-8 mr-2" @click="downloadFile">Download File</PrimaryButton>
+                        <PrimaryButton class="block bottom-0 mt-8 ml-2" @click="previewFile">View File</PrimaryButton>
                     </div>
                     <div class="top-0 right-0 absolute h-12 w-12 m-4 grid place-items-center text-white">
                         <Dropdown>

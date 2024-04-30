@@ -4,7 +4,8 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\WorksheetController;
-use App\Models\Worksheet;
+use App\Http\Controllers\PrintableController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -63,7 +64,20 @@ Route::prefix('/worksheets')->group(function() {
         Route::post('/', [WorksheetController::class, 'store'])->name('worksheet.create');
         Route::post('/{id}', [WorksheetController::class, 'update'])->name('worksheet.update'); // PATCH
         Route::delete('/{id}', [WorksheetController::class, 'destroy'])->name('worksheet.delete');
+    });
 });
+
+Route::prefix('/printables')->group(function() {
+    Route::get('/', [PrintableController::class, 'index'])->name('printables');
+    Route::get('/{id}', [PrintableController::class, 'show'])->name('printable.view');
+    Route::get('/{id}/download-file', [PrintableController::class, 'download'])->name('printable.download');
+    Route::get('/{id}/view', [PrintableController::class, 'preview'])->name('printable.preview');
+
+    Route::middleware('role:admin', 'auth')->group(function() {
+        Route::post('/', [PrintableController::class, 'store'])->name('printable.create');
+        Route::post('/{id}', [PrintableController::class, 'update'])->name('printable.update'); // PATCH
+        Route::delete('/{id}', [PrintableController::class, 'destroy'])->name('printable.delete');
+    });
 });
 
 Route::prefix('/videos')->group(function() {

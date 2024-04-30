@@ -72,7 +72,7 @@ const addNewVideo = () => {
                         <Link :href="`/videos/${video.id}`" v-for="video in videos.data"
                             class="border border-gray-500 dark:text-gray-200 aspect-video rounded-2xl flex items-end relative overflow-hidden">
                             <img :src="`https://img.youtube.com/vi/${video.link}/0.jpg`" class="object-cover h-full w-full border brightness-75" alt="">
-                            <div class="p-4 absolute bg-black/75">
+                            <div class="p-4 absolute bg-black/75 w-full">
                                 <h2 class="text-2xl">{{ video.title }}</h2>
                             </div>
                         </Link>

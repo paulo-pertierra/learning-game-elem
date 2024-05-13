@@ -85,6 +85,7 @@ Route::prefix('/videos')->group(function() {
 Route::prefix('/users')->group(function() {
     Route::get('/',[UserController::class, 'index'])->name('users');
     Route::post('/',[UserController::class, 'store'])->name('users.register');
+    Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.delete');
 });
 
 require __DIR__.'/auth.php';

@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\WorksheetController;
 use App\Http\Controllers\PrintableController;
-
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -31,21 +31,6 @@ Route::get('/games', [GameController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('games');
 
-// Route::get('/games', function() {
-//     
-// })->middleware(['auth', 'verified'])->name('games');
-
-Route::get('/printables', function() {
-    if (Auth::user()->role === 'admin')
-        return Inertia::render('Admin/Printables');
-    else
-        return Inertia::render('Student/Printables');
-})->middleware(['auth', 'verified'])->name('printables');
-
-Route::post('/worksheets/add', function() {
-    
-})->name('worksheet.create');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -67,6 +52,8 @@ Route::prefix('/worksheets')->group(function() {
     });
 });
 
+// Printables Routegroup
+
 Route::prefix('/printables')->group(function() {
     Route::get('/', [PrintableController::class, 'index'])->name('printables');
     Route::get('/{id}', [PrintableController::class, 'show'])->name('printable.view');
@@ -80,6 +67,8 @@ Route::prefix('/printables')->group(function() {
     });
 });
 
+// Videos Routegroup
+
 Route::prefix('/videos')->group(function() {
     Route::get('/', [VideoController::class, 'index'])->name('videos');
     Route::get('/{id}', [VideoController::class, 'show'])->name('videos.view');
@@ -89,6 +78,13 @@ Route::prefix('/videos')->group(function() {
         Route::post('/{id}', [VideoController::class, 'update'])->name('videos.update'); // PATCH
         Route::delete('/{id}', [VideoController::class, 'destroy'])->name('videos.delete');
     });
+});
+
+// Admin Users Routegroup
+
+Route::prefix('/users')->group(function() {
+    Route::get('/',[UserController::class, 'index'])->name('users');
+    Route::post('/',[UserController::class, 'store'])->name('users.register');
 });
 
 require __DIR__.'/auth.php';

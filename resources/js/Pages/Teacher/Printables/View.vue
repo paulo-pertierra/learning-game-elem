@@ -15,17 +15,16 @@ import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import FileInput from '@/Components/FileInput.vue';
 import { watch } from 'vue';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
 
 const page = usePage();
 
 const downloadFile = () => {
-    const url = `/worksheets/${(page.props.worksheet as any).id}/download-file`;
+    const url = `/printables/${(page.props.printable as any).id}/download-file`;
     window.location.href = url;
 }
 
 const previewFile = () => {
-    const url = `/worksheets/${(page.props.worksheet as any).id}/view`;
+    const url = `/printables/${(page.props.printable as any).id}/view`;
     window.location.href = url;
 }
 
@@ -33,54 +32,54 @@ const goBack = () => {
     window.history.back();
 }
 
-const confirmingWorksheetDeletion = ref(false);
+const confirmingPrintableDeletion = ref(false);
 
-const confirmWorksheetDeletion = () => {
-    confirmingWorksheetDeletion.value = true;
+const confirmPrintableDeletion = () => {
+    confirmingPrintableDeletion.value = true;
 }
 
-const closeWorksheetDeletionModal = () => {
-    confirmingWorksheetDeletion.value = false;
+const closePrintableDeletionModal = () => {
+    confirmingPrintableDeletion.value = false;
 }
 
 const deleteProcessing = ref(false);
-const deleteWorksheet = () => {
+const deletePrintable = () => {
     deleteProcessing.value = true;
 
-    router.delete(`/worksheets/${(page.props.worksheet as any).id}`, {
+    router.delete(`/printables/${printable.id}`, {
         onSuccess: () => {
             deleteProcessing.value = false;
         }
     });
 }
 
-const showingWorksheetEditor = ref(false);
+const showingPrintableEditor = ref(false);
 
-const showWorksheetEditor = () => {
-    showingWorksheetEditor.value = true;
+const showPrintableEditor = () => {
+    showingPrintableEditor.value = true;
 }
 
-const closeWorksheetEditor = () => {
-    showingWorksheetEditor.value = false;
+const closePrintableEditor = () => {
+    showingPrintableEditor.value = false;
 }
 
 const form = useForm({
-    title: (page.props.worksheet as any).title,
-    description: (page.props.worksheet as any).description,
-    file: (page.props.worksheet as any).file,
-    grade_level: (page.props.worksheet as any).grade_level,
-    quarter: (page.props.worksheet as any).quarter
+    title: (page.props.printable as any).title,
+    description: (page.props.printable as any).description,
+    file: (page.props.printable as any).file,
+    grade_level: (page.props.printable as any).grade_level,
+    quarter: (page.props.printable as any).quarter
 });
 
 const updateWorksheet = () => {
-    form.post(`/worksheets/${(page.props.worksheet as any).id}`, {
+    form.post(`/printables/${printable.id}`, {
         onError: (error) => {
             console.log(error);
             
         },
         onSuccess: () => {
             form.reset();
-            closeWorksheetEditor();
+            closePrintableEditor();
             window.location.reload();
        }
     })
@@ -90,13 +89,16 @@ watch(form, () => {
     console.log(form);
     
 })
+
+const printable = page.props.printable as any;
+
 </script>
 
 <template>
-    <Head :title="($page.props.worksheet as any).title" />
-    <AdminLayout>
+    <Head :title="printable.title" />
+    <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{ ($page.props.worksheet as any).title }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{ printable.title }}</h2>
         </template>
 
         <div class="py-12">
@@ -107,17 +109,17 @@ watch(form, () => {
                 <div class="bg-white relative dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg block sm:flex sm:items-center">
                     <div class="aspect-square h-full sm:h-64 sm:w-64 border flex-shrink-0 rounded-lg m-4 grid items-end text-gray-800 dark:text-gray-200 overflow-hidden">
                         <div class="p-4 bg-slate-200 dark:bg-gray-900">
-                            <h2 class="text-lg font-semibold">{{ (page.props.worksheet as any).title }}
-                            for Q{{ (page.props.worksheet as any).quarter }}</h2>
-                            <h2>Grade {{ (page.props.worksheet as any).grade_level }}</h2>
+                            <h2 class="text-lg font-semibold">{{ printable.title }}
+                            for Q{{ printable.quarter }}</h2>
+                            <h2>Grade {{ printable.grade_level }}</h2>
                         </div>
                     </div>
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <h2 class="text-3xl font-semibold">
-                            {{ (page.props.worksheet as any).title }}
+                            {{ printable.title }}
                         </h2>
                         <h4>
-                            {{ (page.props.worksheet as any).description }}
+                            {{ printable.description }}
                         </h4>
                         <PrimaryButton class="block bottom-0 mt-8 mr-2" @click="downloadFile">Download File</PrimaryButton>
                         <PrimaryButton class="block bottom-0 mt-8 ml-2" @click="previewFile">View File</PrimaryButton>
@@ -128,35 +130,35 @@ watch(form, () => {
                                 <VerticalEllipsis class="h-8" />
                             </template>
                             <template #content>
-                                <DropdownLink @click="showWorksheetEditor">Edit</DropdownLink>
-                                <DropdownLink @click="confirmWorksheetDeletion">Delete</DropdownLink>
+                                <DropdownLink @click="showPrintableEditor">Edit</DropdownLink>
+                                <DropdownLink @click="confirmPrintableDeletion">Delete</DropdownLink>
                             </template>
                         </Dropdown>
                     </div>
                 </div>
             </div>
         </div>
-        <Modal :show="confirmingWorksheetDeletion" @close="closeWorksheetDeletionModal">
+        <Modal :show="confirmingPrintableDeletion" @close="closePrintableDeletionModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     Are you sure you want to delete this worksheet?
                 </h2>
 
                 <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeWorksheetDeletionModal"> Cancel </SecondaryButton>
+                    <SecondaryButton @click="closePrintableDeletionModal"> Cancel </SecondaryButton>
 
                     <DangerButton
                         class="ms-3"
                         :class="{ 'opacity-25': deleteProcessing }"
                         :disabled="deleteProcessing"
-                        @click="deleteWorksheet"
+                        @click="deletePrintable"
                     >
                         Delete Worksheet
                     </DangerButton>
                 </div>
             </div>
         </Modal>
-        <Modal :show="showingWorksheetEditor">
+        <Modal :show="showingPrintableEditor">
             <form class="p-6" @submit.prevent="updateWorksheet">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                         Add New Worksheet
@@ -198,13 +200,13 @@ watch(form, () => {
                         <InputError :message="$page.props.errors.file" />
                     </div>
                     <div class="mt-6 flex justify-end">
-                        <SecondaryButton @click="closeWorksheetEditor"> Cancel </SecondaryButton>
+                        <SecondaryButton @click="closePrintableEditor"> Cancel </SecondaryButton>
                         <PrimaryButton class="ms-3" :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing">
-                            Add New Worksheet
+                            Add New Printable
                         </PrimaryButton>
                     </div>
                 </form>
         </Modal>
-    </AdminLayout>
+    </AuthenticatedLayout>
 </template>

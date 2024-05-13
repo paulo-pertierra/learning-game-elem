@@ -10,7 +10,6 @@ import TextInput from '@/Components/TextInput.vue';
 import FileInput from '@/Components/FileInput.vue';
 import InputError from '@/Components/InputError.vue';
 import Pagination from '@/Components/Pagination.vue';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
 
 const addingNewWorksheet = ref(false);
 
@@ -54,7 +53,7 @@ const worksheets = page.props.worksheets as any;
 
         <Head title="Worksheets" />
 
-        <AdminLayout>
+        <AuthenticatedLayout>
             <template #header>
                 <div class="flex items-center justify-between">
                     <h2 class="font-semibold mr-2 text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheets</h2>
@@ -166,6 +165,6 @@ const worksheets = page.props.worksheets as any;
                     </div>
                 </form>
             </Modal>
-        </AdminLayout>
+        </AuthenticatedLayout>
     </div>
 </template>

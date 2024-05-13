@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import AdminLayout from "@/Layouts/AdminLayout.vue";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue"
 </script>
 
 <template>
-    <AdminLayout>
+    <AuthenticatedLayout>
         <template #header>
             <div class="flex items-center justify-between">
                     <h2 class="font-semibold mr-2 text-xl text-gray-800 dark:text-gray-200 leading-tight">Games</h2>
@@ -33,5 +33,5 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
                     </form>
                 </div>
         </template>
-    </AdminLayout>
+    </AuthenticatedLayout>
 </template>

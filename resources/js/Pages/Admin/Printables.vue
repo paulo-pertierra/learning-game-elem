@@ -10,6 +10,7 @@ import TextInput from '@/Components/TextInput.vue';
 import FileInput from '@/Components/FileInput.vue';
 import InputError from '@/Components/InputError.vue';
 import Pagination from '@/Components/Pagination.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 
 const addingNewPrintable = ref(false);
 
@@ -53,7 +54,7 @@ const printables = page.props.printables as any;
 
         <Head title="Printable Documents" />
 
-        <AuthenticatedLayout>
+        <AdminLayout>
             <template #header>
                 <div class="flex items-center justify-between">
                     <h2 class="font-semibold mr-2 text-xl text-gray-800 dark:text-gray-200 leading-tight">Printable Documents</h2>
@@ -164,6 +165,6 @@ const printables = page.props.printables as any;
                     </div>
                 </form>
             </Modal>
-        </AuthenticatedLayout>
+        </AdminLayout>
     </div>
 </template>

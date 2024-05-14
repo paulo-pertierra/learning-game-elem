@@ -10,6 +10,7 @@ class GameQuestion extends Model
 {
     use HasFactory;
 
+    protected $table = 'game_questions';
     protected $fillable = [
         'question',
         'item_no'
@@ -17,6 +18,6 @@ class GameQuestion extends Model
 
     public function gameAnswer(): HasMany
     {
-        return $this->hasMany(GameAnswer::class);
+        return $this->hasMany(GameAnswer::class, 'question_id');
     }
 }

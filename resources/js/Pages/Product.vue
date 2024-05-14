@@ -42,18 +42,6 @@ function handleImageError() {
         </nav>
     </div>
     <main class="min-h-[calc(100dvh-128px)] dark:bg-slate-950 text-slate-100 py-8 px-2">
-        <!-- <div
-            class="max-w-[1200px] h-[600px] mx-auto bg-[url('/assets/images/hero-image.webp')] bg-center rounded-xl overflow-hidden shadow-lg">
-            <div class="flex items-center backdrop-brightness-50 w-full h-full backdrop-blur-sm">
-                <div class="p-8 md:p-16 text-white">
-                    <h1 class="text-3xl md:text-5xl font-bold my-4">Interactive learning with QuiLMS</h1>
-                    <p class="text-lg">Introducing a new way to learn online.</p>
-                    <Link :href="route('dashboard')"
-                        class="text-lg my-4 block w-fit underline underline-offset-4 hover:underline-offset-8 transition-all">
-                    Get Started</Link>
-                </div>
-            </div>
-        </div> -->
         <div class="max-w-[1200px] mx-auto py-10 my-8 text-center shadow-lg rounded-2xl">
             <h1 class="text-4xl font-semibold my-4">Our product is a learning management system that makes interactive games for students.</h1>
             <p>Here are the features in our web-based application. We create the best experiences for
@@ -99,7 +87,7 @@ function handleImageError() {
     <div class="w-full bg-blue-900 dark:bg-blue-950 text-slate-200">
         <footer class="mx-auto max-w-[1200px] p-2 grid grid-cols-3 gap-10">
             <div>
-                <Link href="/" class="font-bold text-4xl mt-4 block">QuiLMS</Link>
+                <Link href="/" class="font-bold text-4xl mt-4 block">C1ES LMS</Link>
                 <p>The interactive learning platform.</p>
             </div>
             <div>
@@ -115,7 +103,7 @@ function handleImageError() {
                 <Link href="" class="block my-4">Developers</Link>
             </div>
             <div class="col-span-3 text-center my-8">
-                Copyright &copy; 2024 QuiLMS Inc. All rights reserved.
+                Copyright &copy; 2024 C1ES LMS Inc. All rights reserved.
             </div>
         </footer>
     </div>

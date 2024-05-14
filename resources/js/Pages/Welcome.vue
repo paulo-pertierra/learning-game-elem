@@ -82,7 +82,7 @@ function handleImageError() {
     <div class="w-full bg-blue-900 dark:bg-blue-950 text-slate-200">
         <footer class="mx-auto max-w-[1200px] p-2 grid grid-cols-3 gap-10">
             <div>
-                <Link href="/" class="font-bold text-4xl mt-4 block">QuiLMS</Link>
+                <Link href="/" class="font-bold text-4xl mt-4 block">C1ES LMS</Link>
                 <p>The interactive learning platform.</p>
             </div>
             <div>
@@ -98,7 +98,7 @@ function handleImageError() {
                 <Link href="" class="block my-4">Developers</Link>
             </div>
             <div class="col-span-3 text-center my-8">
-                Copyright &copy; 2024 QuiLMS Inc. All rights reserved.
+                Copyright &copy; 2024 C1ES LMS Inc. All rights reserved.
             </div>
         </footer>
     </div>

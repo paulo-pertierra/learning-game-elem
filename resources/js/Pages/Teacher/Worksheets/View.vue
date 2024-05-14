@@ -15,6 +15,8 @@ import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import FileInput from '@/Components/FileInput.vue';
 import { watch } from 'vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
+import TeacherLayout from '@/Layouts/TeacherLayout.vue';
 
 const page = usePage();
 
@@ -93,7 +95,7 @@ watch(form, () => {
 
 <template>
     <Head :title="($page.props.worksheet as any).title" />
-    <AuthenticatedLayout>
+    <TeacherLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{ ($page.props.worksheet as any).title }}</h2>
         </template>
@@ -205,5 +207,5 @@ watch(form, () => {
                     </div>
                 </form>
         </Modal>
-    </AuthenticatedLayout>
+    </TeacherLayout>
 </template>

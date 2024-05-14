@@ -21,7 +21,11 @@ class PrintableController extends Controller
             return Inertia::render('Admin/Printables', [
                 "printables" => $printables
             ]);
-
+        
+        else if (Auth::user()->role === 'teacher') 
+            return Inertia::render('Teacher/Printables', [
+                "printables" => $printables
+            ]);
         else 
             return Inertia::render('Student/Printables',
             [

@@ -22,11 +22,11 @@ function handleImageError() {
     <div class=" bg-blue-900 dark:bg-blue-950 text-slate-200 px-4">
         <nav class="h-16 max-w-[1200px] mx-auto flex items-center justify-between">
             <div class="flex items-center">
-                <Link href="/" class="font-bold text-4xl">QuiLMS</Link>
+                <Link href="/" class="font-bold text-4xl">C1ES LMS</Link>
                 <Link class="ml-16" href="/">Home</Link>
-                <Link class="ml-8" href="/">Our Product</Link>
-                <Link class="ml-8" href="/">About Us</Link>
-                <Link class="ml-8" href="/">Contact</Link>
+                <Link class="ml-8" href="/product">Our Product</Link>
+                <Link class="ml-8" href="/about">About Us</Link>
+                <!-- <Link class="ml-8" href="/">Contact</Link> -->
             </div>
             <div v-if="canLogin">
                 <div v-if="$page.props.auth.user">
@@ -47,7 +47,7 @@ function handleImageError() {
             class="max-w-[1200px] h-[600px] mx-auto bg-[url('/assets/images/hero-image.webp')] bg-center rounded-xl overflow-hidden shadow-lg">
             <div class="flex items-center backdrop-brightness-50 w-full h-full backdrop-blur-sm">
                 <div class="p-8 md:p-16 text-white">
-                    <h1 class="text-3xl md:text-5xl font-bold my-4">Interactive learning with QuiLMS</h1>
+                    <h1 class="text-3xl md:text-5xl font-bold my-4">Interactive learning with C1ES LMS</h1>
                     <p class="text-lg">Introducing a new way to learn online.</p>
                     <Link :href="route('dashboard')"
                         class="text-lg my-4 block w-fit underline underline-offset-4 hover:underline-offset-8 transition-all">

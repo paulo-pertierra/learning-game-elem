@@ -6,7 +6,9 @@ import Pagination from "@/Components/Pagination.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
+import AdminLayout from "@/Layouts/AdminLayout.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import TeacherLayout from "@/Layouts/TeacherLayout.vue";
 import { Link, useForm, usePage, Head } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import { ref } from "vue";
@@ -49,7 +51,7 @@ const addNewVideo = () => {
 <template>
 
     <Head title="Videos List" />
-    <AuthenticatedLayout>
+    <TeacherLayout>
         <template #header>
             <div class="flex items-center justify-between">
                 <h2 class="font-semibold mr-2 text-xl text-gray-800 dark:text-gray-200 leading-tight">Videos</h2>
@@ -168,5 +170,5 @@ const addNewVideo = () => {
             </form>
         </Modal>
 
-    </AuthenticatedLayout>
+    </TeacherLayout>
 </template>

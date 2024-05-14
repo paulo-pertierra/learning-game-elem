@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class GameAnswer extends Model
 {
@@ -13,4 +14,9 @@ class GameAnswer extends Model
         'text',
         'is_correct'
     ];
+
+    public function game(): BelongsTo
+    {
+        return $this->belongsTo(GameQuestion::class, 'game_questions_id');
+    }
 }

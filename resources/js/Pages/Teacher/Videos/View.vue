@@ -9,7 +9,9 @@ import Modal from '@/Components/Modal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import TeacherLayout from '@/Layouts/TeacherLayout.vue';
 import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -68,7 +70,7 @@ const updateVideo = () => {
 <template>
 
     <Head :title="(video as any).title" />
-    <AuthenticatedLayout>
+    <TeacherLayout>
         <div class="py-12">
             <div class="max-w-5xl mx-auto px-6 lg:px-8">
                 <div
@@ -171,5 +173,5 @@ const updateVideo = () => {
                     </div>
                 </form>
         </Modal>
-    </AuthenticatedLayout>
+    </TeacherLayout>
 </template>

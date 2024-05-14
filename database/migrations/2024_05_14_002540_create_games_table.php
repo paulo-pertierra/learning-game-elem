@@ -20,7 +20,6 @@ return new class extends Migration
             $table->integer('grade_level');
             $table->integer('quarter');
             $table->integer('total_questions');
-            $table->foreignIdFor(GameQuestion::class, 'question_id');
             $table->timestamps();
         });
     }

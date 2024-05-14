@@ -16,16 +16,21 @@ class VideoController extends Controller
     {
         $videos = Video::orderBy('created_at', 'DESC')->paginate(6);
 
-        if (Auth::user()->role === 'admin') 
+        if (Auth::user()->role === 'admin')
             return Inertia::render('Admin/Videos', [
                 "videos" => $videos
             ]);
-
-        else 
-            return Inertia::render('Student/Videos',
-            [
+        else if (Auth::user()->role === 'teacher')
+            return Inertia::render('Teacher/Videos', [
                 "videos" => $videos
             ]);
+        else
+            return Inertia::render(
+                'Student/Videos',
+                [
+                    "videos" => $videos
+                ]
+            );
     }
 
     /**
@@ -40,7 +45,7 @@ class VideoController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {   
+    {
         $request->validate([
             'link' => ['required'],
             'title' => ['required', 'max:50'],
@@ -66,12 +71,12 @@ class VideoController extends Controller
     public function show(String $id)
     {
         $video = Video::findOrFail($id);
-        
-        if (Auth::user()->role === 'admin') 
+
+        if (Auth::user()->role === 'admin')
             return Inertia::render('Admin/Videos/View', [
                 'video' => $video
             ]);
-        else 
+        else
             return Inertia::render('Student/Videos/View', [
                 'video' => $video
             ]);

@@ -19,16 +19,21 @@ class WorksheetController extends Controller
     {
         $worksheets = Worksheet::orderBy('created_at', 'DESC')->paginate(6);
 
-        if (Auth::user()->role === 'admin') 
+        if (Auth::user()->role === 'admin')
             return Inertia::render('Admin/Worksheets', [
                 "worksheets" => $worksheets
             ]);
-
-        else 
-            return Inertia::render('Student/Worksheets',
-            [
+        else if (Auth::user()->role === 'teacher')
+            return Inertia::render('Teacher/Worksheets', [
                 "worksheets" => $worksheets
             ]);
+        else
+            return Inertia::render(
+                'Student/Worksheets',
+                [
+                    "worksheets" => $worksheets
+                ]
+            );
     }
 
     /**
@@ -41,7 +46,7 @@ class WorksheetController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'=> ['required', 'max:25'],
+            'title' => ['required', 'max:25'],
             'file' => ['required'],
             'grade_level' => ['required', 'numeric', 'min:1', 'max:3'],
             'quarter' => ['required', 'numeric', 'min:1', 'max:4']
@@ -66,12 +71,12 @@ class WorksheetController extends Controller
     public function show(string $id)
     {
         $worksheet = Worksheet::findOrFail($id);
-        
-        if (Auth::user()->role === 'admin') 
+
+        if (Auth::user()->role === 'admin')
             return Inertia::render('Admin/Worksheets/View', [
                 'worksheet' => $worksheet
             ]);
-        else 
+        else
             return Inertia::render('Student/Worksheets/View', [
                 'worksheet' => $worksheet
             ]);
@@ -91,13 +96,13 @@ class WorksheetController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'title'=> ['required', 'max:25'],
+            'title' => ['required', 'max:25'],
             'grade_level' => ['required', 'numeric', 'min:1', 'max:3'],
             'quarter' => ['required', 'numeric', 'min:1', 'max:4']
         ]);
 
         $worksheet = Worksheet::find($id);
-        
+
         $path = $worksheet->file;
         $worksheetFile = $request->file('file');
         if (!is_null($worksheetFile))
@@ -118,14 +123,14 @@ class WorksheetController extends Controller
     public function destroy(string $id)
     {
         Worksheet::destroy($id);
-        
+
         return redirect()->route('worksheets');
     }
 
-    public function download(string $id) 
-    {    
+    public function download(string $id)
+    {
         $worksheet = Worksheet::findOrFail($id);
-        
+
         return Storage::download($worksheet->file);
     }
 

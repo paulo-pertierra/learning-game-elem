@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
+
+const page = usePage();
 </script>
 
 <template>
@@ -13,9 +15,24 @@ import { Head } from '@inertiajs/vue3';
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">You're logged in!</div>
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-800 dark:text-gray-200">
+                
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg grid grid-cols-3">
+                    <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
+                        Current users: {{ page.props.statistics.users }}
+                    </div>
+                    <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
+                        Worksheets: {{ page.props.statistics.worksheets }}
+                    </div>
+                    <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
+                        Games: {{ page.props.statistics.games }}
+                    </div>
+                    <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
+                        Videos: {{ page.props.statistics.videos }}
+                    </div>
+                    <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
+                        Printables: {{ page.props.statistics.printables }}
+                    </div>
                 </div>
             </div>
         </div>

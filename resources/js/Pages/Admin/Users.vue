@@ -9,6 +9,7 @@ import TextInput from '@/Components/TextInput.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { User } from '@/types';
 import { useForm, usePage } from '@inertiajs/vue3';
+import { watch } from 'vue';
 import { ref } from 'vue';
 
 const page = usePage();
@@ -20,13 +21,16 @@ const form = useForm({
     email: "",
     password: "",
     password_confirmation: "",
-    role: ""
+    role: "",
+    grade_level: 0
 });
 
 
 const addingNewUser = ref(false);
 
 const addNewUser = () => {
+    if (form.role === 'admin') (form.grade_level as any) = null;
+
     form.post('/users', {
         onFinish: () => {
             window.location.reload()
@@ -57,6 +61,11 @@ const deleteUser = (id: string) => {
 }
 
 const selectedUserId = ref("");
+
+watch(form, () => {
+    console.log(form.grade_level);
+    
+})
 </script>
 
 <template>
@@ -84,6 +93,9 @@ const selectedUserId = ref("");
                                     Role
                                 </th>
                                 <th scope="col" class="px-3 py-4">
+                                    Grade Level
+                                </th>
+                                <th scope="col" class="px-3 py-4">
                                     Action
                                 </th>
                             </tr>
@@ -101,14 +113,18 @@ const selectedUserId = ref("");
                                 <td class="px-3 py-4 first-letter:uppercase">
                                     {{ user.role }}
                                 </td>
+                                <td v-if="user.grade_level" class="px-3 py-4 first-letter:uppercase">
+                                    Grade {{ user.grade_level }}
+                                </td>
+                                <td v-else class="px-3 py-4 first-letter:uppercase">
+                                    None Assigned
+                                </td>
                                 <td class="px-3 py-4">
                                     <button
                                         class="mr-2 text-orange-400 border-orange-400 border p-2 rounded-lg">Edit</button>
-                                    <button 
-                                        v-if="user.id !== $page.props.auth.user.id"
+                                    <button v-if="user.id !== $page.props.auth.user.id"
                                         @click="confirmingUserDeletion = true, selectedUserId = user.id"
-                                        class="text-red-600  border-red-600 border p-2 rounded-lg"
-                                    >
+                                        class="text-red-600  border-red-600 border p-2 rounded-lg">
                                         Delete
                                     </button>
                                 </td>
@@ -125,40 +141,51 @@ const selectedUserId = ref("");
                 Add New User
             </h2>
             <div class="my-4">
-                <InputLabel>User Name</InputLabel>
-                <TextInput id="worksheet-name" type="text" class="mt-1 block w-full" v-model="form.name!" required
+                <InputLabel>Full Name</InputLabel>
+                <TextInput id="user-name" type="text" class="mt-1 block w-full" v-model="form.name!" required
                     autofocus />
                 <InputError :message="$page.props.errors.name" />
             </div>
             <div class="my-4">
                 <InputLabel>Email</InputLabel>
-                <TextInput id="worksheet-description" type="text" class="mt-1 block w-full" v-model="form.email!"
+                <TextInput id="user-description" type="text" class="mt-1 block w-full" v-model="form.email!"
                     required autofocus />
                 <InputError :message="$page.props.errors.email" />
             </div>
             <div class="my-4">
                 <InputLabel>Password</InputLabel>
-                <TextInput id="worksheet-description" type="text" class="mt-1 block w-full" v-model="form.password"
+                <TextInput id="user-description" type="text" class="mt-1 block w-full" v-model="form.password"
                     required autofocus />
                 <InputError :message="$page.props.errors.password" />
             </div>
             <div class="my-4">
                 <InputLabel>Confirm Password</InputLabel>
-                <TextInput id="worksheet-description" type="text" class="mt-1 block w-full"
+                <TextInput id="user-description" type="text" class="mt-1 block w-full"
                     v-model="form.password_confirmation" required autofocus />
                 <InputError :message="$page.props.errors.password_confirmation" />
             </div>
             <div class="my-4 ">
                 <InputLabel>Role</InputLabel>
-                <div class="grid grid-cols-3 gap-2 py-2">
+                <div class="grid grid-cols-2 gap-2 py-2">
                     <SecondaryButton :active="form.role === 'admin'" @click="form.role = 'admin'">Admin
                     </SecondaryButton>
                     <SecondaryButton :active="form.role === 'teacher'" @click="form.role = 'teacher'">Teacher
                     </SecondaryButton>
-                    <SecondaryButton :active="form.role === 'student'" @click="form.role = 'student'">Student
-                    </SecondaryButton>
                     <InputError class="col-span-4"
                         :message="$page.props.errors.role ? 'Quarter for this material is required.' : ''" />
+                </div>
+            </div>
+            <div class="my-4" v-if="form.role === 'teacher'">
+                <InputLabel>Grade Level</InputLabel>
+                <div class="grid grid-cols-3 gap-2 py-2">
+                    <SecondaryButton :active="form.grade_level == 1" @click="form.grade_level = 1">Grade 1
+                    </SecondaryButton>
+                    <SecondaryButton :active="form.grade_level == 2" @click="form.grade_level = 2">Grade 2
+                    </SecondaryButton>
+                    <SecondaryButton :active="form.grade_level == 3" @click="form.grade_level = 3">Grade 3
+                    </SecondaryButton>
+                    <InputError class="col-span-4"
+                        :message="$page.props.errors.grade_level ? 'Quarter for this material is required.' : ''" />
                 </div>
             </div>
             <div class="mt-6 flex justify-end">
@@ -170,23 +197,19 @@ const selectedUserId = ref("");
         </form>
     </Modal>
     <Modal :show="confirmingUserDeletion" @close="closeUserDeletionModal">
-            <div class="p-6">
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Are you sure you want to delete this worksheet?
-                </h2>
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Are you sure you want to delete this user?
+            </h2>
 
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeUserDeletionModal"> Cancel </SecondaryButton>
+            <div class="mt-6 flex justify-end">
+                <SecondaryButton @click="closeUserDeletionModal"> Cancel </SecondaryButton>
 
-                    <DangerButton
-                        class="ms-3"
-                        :class="{ 'opacity-25': deleteProcessing }"
-                        :disabled="deleteProcessing"
-                        @click="deleteUser(selectedUserId)"
-                    >
-                        Delete Worksheet
-                    </DangerButton>
-                </div>
+                <DangerButton class="ms-3" :class="{ 'opacity-25': deleteProcessing }" :disabled="deleteProcessing"
+                    @click="deleteUser(selectedUserId)">
+                    Delete User
+                </DangerButton>
             </div>
-        </Modal>
+        </div>
+    </Modal>
 </template>

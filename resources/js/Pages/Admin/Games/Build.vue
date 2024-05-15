@@ -67,10 +67,26 @@ const createGame = () => {
         <div class="py-12 text-gray-800 dark:text-gray-200">
             <div class="max-w-3xl mx-auto px-6 lg:px-8">
                 <div class="p-4 border rounded-lg">
-                    <InputLabel>
-                        <p class="text-3xl">Game Title</p>
+                    <InputLabel class="mb-3">
+                        <p class="text-xl">Game Title</p>
                     </InputLabel>
                     <TextInput class="w-full" v-model="game.title" />
+                    <InputLabel class="my-3">
+                       Game Mode
+                    </InputLabel>
+                    <select name="" class="w-full text-slate-200 bg-gray-900 rounded-md border-gray-700">
+                        <option value="easy">Pop Quiz</option>
+                        <option value="easy">Immersive Reading</option>
+                        <option value="easy">Guess the Body Parts</option>
+                    </select>
+                    <InputLabel class="my-3">
+                       Difficulty
+                    </InputLabel>
+                    <select name="" class="w-full text-slate-200 bg-gray-900 rounded-md border-gray-700">
+                        <option value="easy">Easy</option>
+                        <option value="average">Average</option>
+                        <option value="difficult">Difficult</option>
+                    </select>
                 </div>
                 <div class="p-4 border rounded-lg my-4">
                     <div v-for="question in questions">

@@ -32,7 +32,8 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role
+            'role' => $request->role,
+            'grade_level' => $request->grade_level
         ]);
 
         event(new Registered($user));

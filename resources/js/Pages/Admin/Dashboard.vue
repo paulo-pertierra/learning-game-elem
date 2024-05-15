@@ -19,19 +19,19 @@ const page = usePage();
                 
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg grid grid-cols-3">
                     <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
-                        Current users: {{ page.props.statistics.users }}
+                        Current users: {{ (page.props.statistics as any).users }}
                     </div>
                     <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
-                        Worksheets: {{ page.props.statistics.worksheets }}
+                        Worksheets: {{ (page.props.statistics as any).worksheets }}
                     </div>
                     <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
-                        Games: {{ page.props.statistics.games }}
+                        Games: {{ (page.props.statistics as any).games }}
                     </div>
                     <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
-                        Videos: {{ page.props.statistics.videos }}
+                        Videos: {{ (page.props.statistics as any).videos }}
                     </div>
                     <div class="h-[96px] flex items-center p-4 border m-2 rounded-lg text-2xl">
-                        Printables: {{ page.props.statistics.printables }}
+                        Printables: {{ (page.props.statistics as any).printables }}
                     </div>
                 </div>
             </div>

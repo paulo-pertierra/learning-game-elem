@@ -11,9 +11,9 @@ import { router } from "@inertiajs/vue3";
             <div class="max-w-7xl mx-auto px-6 lg:px-8 text-white">
                 <div class="mb-4">
                     <h2 class="text-3xl font-bold">
-                        {{ $page.props.game.title }}
+                        {{ ($page.props.game as any).title }}
                     </h2>
-                    <p class="text-2xl">Total Score: {{ $page.props.score.score }} / {{ $page.props.score.total_questions }}</p>
+                    <p class="text-2xl">Total Score: {{ ($page.props.score as any).score }} / {{ ($page.props.score as any).total_questions }}</p>
                     <PrimaryButton class="my-10" @click="router.visit(`/games`)">Go To Games</PrimaryButton>
                 </div>
             </div>

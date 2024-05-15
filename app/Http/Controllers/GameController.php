@@ -68,8 +68,8 @@ class GameController extends Controller
         $game = Game::find($id);
         $questions = $game->gameQuestion;
 
-        if (Auth::user()->role == 'student')
-        return Inertia::render('Student/Games/Play', [
+        if (Auth::user()->role == 'teacher')
+        return Inertia::render('Teacher/Games/Play', [
             "game" => $game
         ]);
 
@@ -81,41 +81,43 @@ class GameController extends Controller
         $game = Game::find($id);
         $question = GameQuestion::query()->where('game_id', $id)->where('item_no', $itemNo)->first();
         $answers = GameAnswer::query()->where('game_question_id', $question->id)->inRandomOrder()->get();
-        return Inertia::render('Student/Games/Play/Question', [
+        return Inertia::render('Teacher/Games/Play/Question', [
             "game" => $game,
             "question" => $question,
             "answers" => $answers,
-            "storedAnswers" => $request->storedAnswers
         ]);
     }
 
     public function submit(Request $request, $id)
     {
-        $user = User::findOrFail(Auth::user()->id);
-        $gameId = $id;
+        // $user = User::findOrFail(Auth::user()->id);
+        // $gameId = $id;
 
-        $game = Game::findOrFail($gameId);
+        // $game = Game::findOrFail($gameId);
 
-        $answers = $request->data['storedAnswers'];
+        // $score = 0;
+        // foreach ($answers as $answer) {
+        //     $answerModel = GameAnswer::find($answer);
+        //     if ($answerModel->is_correct == true) $score +=1;
+        // }
 
-        $score = 0;
-        foreach ($answers as $answer) {
-            $answerModel = GameAnswer::find($answer);
-            if ($answerModel->is_correct == true) $score +=1;
-        }
+        // $gameScore = GameScore::create([
+        //     "score" => $score,
+        //     "total_questions" => $game->total_questions
+        // ]);
 
-        $gameScore = GameScore::create([
-            "score" => $score,
-            "total_questions" => $game->total_questions
-        ]);
-
-        $gameScore->user_id = $user->id;
-        $gameScore->game_id = $game->id;
-        $gameScore->save();
+        // $gameScore->user_id = $user->id;
+        // $gameScore->game_id = $game->id;
+        // $gameScore->save();
         
-        return Inertia::render('Student/Games/Score', [
-            "game" => $game,
-            "score" => $gameScore
+        return Inertia::render('Teacher/Games/End');
+    }
+
+    public function end($id)
+    {   
+        $game = Game::find($id);
+        return Inertia::render('Teacher/Games/End', [
+            'game' => $game
         ]);
     }
 }

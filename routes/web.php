@@ -72,6 +72,7 @@ Route::prefix('/games')->group(function () {
     Route::post('/', [GameController::class, 'store'])->name('games.create');
     Route::get('/{id}/question/{item}', [GameController::class, 'question'])->name('question.view');
     Route::post('/{id}', [GameController::class, 'submit'])->name('games.submit');
+    Route::get('/{id}/end', [GameController::class, 'end'])->name('games.end');
 });
 
 // Worksheets Routegroup

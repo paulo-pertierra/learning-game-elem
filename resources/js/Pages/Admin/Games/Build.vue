@@ -4,7 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 type Answer = {
@@ -53,6 +53,7 @@ const createGame = () => {
         questions: questions.value
     })
     form.post("/games");
+    router.visit("/games");
 }
 </script>
 <template>
@@ -74,18 +75,26 @@ const createGame = () => {
                     <InputLabel class="my-3">
                        Game Mode
                     </InputLabel>
-                    <select name="" class="w-full text-slate-200 bg-gray-900 rounded-md border-gray-700">
-                        <option value="easy">Pop Quiz</option>
-                        <option value="easy">Immersive Reading</option>
-                        <option value="easy">Guess the Body Parts</option>
+                    <select name="quiz-type" v-model="game.game_mode" class="w-full text-slate-200 bg-gray-900 rounded-md border-gray-700">
+                        <option value="pop-quiz">Pop Quiz</option>
+                        <!-- <option value="immersive-reading">Immersive Reading</option>
+                        <option value="guess-body-parts">Guess the Body Parts</option> -->
                     </select>
                     <InputLabel class="my-3">
                        Difficulty
                     </InputLabel>
-                    <select name="" class="w-full text-slate-200 bg-gray-900 rounded-md border-gray-700">
+                    <select name="quiz-difficulty" v-model="game.difficulty" class="w-full text-slate-200 bg-gray-900 rounded-md border-gray-700">
                         <option value="easy">Easy</option>
                         <option value="average">Average</option>
                         <option value="difficult">Difficult</option>
+                    </select>
+                    <InputLabel class="my-3">
+                       Grade Level
+                    </InputLabel>
+                    <select name="quiz-grade-level" v-model="game.grade_level" class="w-full text-slate-200 bg-gray-900 rounded-md border-gray-700">
+                        <option :value="1">Grade 1</option>
+                        <option :value="2">Grade 2</option>
+                        <option :value="3">Grade 3</option>
                     </select>
                 </div>
                 <div class="p-4 border rounded-lg my-4">

@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import TeacherLayout from "@/Layouts/TeacherLayout.vue";
 import { router } from "@inertiajs/vue3";
 </script>
 
 <template>
-    <AuthenticatedLayout>
+    <TeacherLayout>
         <div class="py-12">
             <div class="max-w-7xl mx-auto px-6 lg:px-8 text-white">
                 <div class="mb-4">
@@ -17,5 +18,5 @@ import { router } from "@inertiajs/vue3";
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </TeacherLayout>
 </template>

@@ -15,6 +15,8 @@ class GameController extends Controller
 {
     public function index() {
 
+        $gradeLevel = Auth::user()->grade_level;
+        $gamesFiltered = Game::where("grade_level", "=", $gradeLevel)->paginate(6);
         $games = Game::paginate(6);
 
         if (Auth::user()->role === 'admin')
@@ -23,7 +25,7 @@ class GameController extends Controller
             ]);
         if (Auth::user()->role === 'teacher')
             return Inertia::render('Teacher/Games', [
-                'games' => $games
+                'games' => $gamesFiltered
             ]);
         if (Auth::user()->role === 'student')
             return Inertia::render('Student/Games', [

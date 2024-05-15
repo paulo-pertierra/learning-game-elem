@@ -15,7 +15,9 @@ class PrintableController extends Controller
      */
     public function index()
     {
+        $gradeLevel = Auth::user()->grade_level;
         $printables = Printable::orderBy('created_at', 'DESC')->paginate(6);
+        $printablesFiltered = Printable::where('grade_level', '=', $gradeLevel)->orderBy('created_at', 'DESC')->paginate(6);
 
         if (Auth::user()->role === 'admin') 
             return Inertia::render('Admin/Printables', [
@@ -24,12 +26,7 @@ class PrintableController extends Controller
         
         else if (Auth::user()->role === 'teacher') 
             return Inertia::render('Teacher/Printables', [
-                "printables" => $printables
-            ]);
-        else 
-            return Inertia::render('Student/Printables',
-            [
-                "printables" => $printables
+                "printables" => $printablesFiltered
             ]);
     }
 

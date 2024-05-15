@@ -83,11 +83,9 @@ Route::prefix('/worksheets')->group(function () {
     Route::get('/{id}/download-file', [WorksheetController::class, 'download'])->name('worksheet.download');
     Route::get('/{id}/view', [WorksheetController::class, 'preview'])->name('worksheet.preview');
 
-    Route::middleware('role:admin', 'auth')->group(function () {
-        Route::post('/', [WorksheetController::class, 'store'])->name('worksheet.create');
-        Route::post('/{id}', [WorksheetController::class, 'update'])->name('worksheet.update'); // PATCH
-        Route::delete('/{id}', [WorksheetController::class, 'destroy'])->name('worksheet.delete');
-    });
+    Route::post('/', [WorksheetController::class, 'store'])->name('worksheet.create');
+    Route::post('/{id}', [WorksheetController::class, 'update'])->name('worksheet.update'); // PATCH
+    Route::delete('/{id}', [WorksheetController::class, 'destroy'])->name('worksheet.delete');
 });
 
 // Printables Routegroup
@@ -98,11 +96,9 @@ Route::prefix('/printables')->group(function () {
     Route::get('/{id}/download-file', [PrintableController::class, 'download'])->name('printable.download');
     Route::get('/{id}/view', [PrintableController::class, 'preview'])->name('printable.preview');
 
-    Route::middleware('role:admin', 'auth')->group(function () {
-        Route::post('/', [PrintableController::class, 'store'])->name('printable.create');
-        Route::post('/{id}', [PrintableController::class, 'update'])->name('printable.update'); // PATCH
-        Route::delete('/{id}', [PrintableController::class, 'destroy'])->name('printable.delete');
-    });
+    Route::post('/', [PrintableController::class, 'store'])->name('printable.create');
+    Route::post('/{id}', [PrintableController::class, 'update'])->name('printable.update'); // PATCH
+    Route::delete('/{id}', [PrintableController::class, 'destroy'])->name('printable.delete');
 });
 
 // Videos Routegroup
@@ -111,11 +107,9 @@ Route::prefix('/videos')->group(function () {
     Route::get('/', [VideoController::class, 'index'])->name('videos');
     Route::get('/{id}', [VideoController::class, 'show'])->name('videos.view');
 
-    Route::middleware('role:admin', 'auth')->group(function () {
-        Route::post('/', [VideoController::class, 'store'])->name('videos.create');
-        Route::post('/{id}', [VideoController::class, 'update'])->name('videos.update'); // PATCH
-        Route::delete('/{id}', [VideoController::class, 'destroy'])->name('videos.delete');
-    });
+    Route::post('/', [VideoController::class, 'store'])->name('videos.create');
+    Route::post('/{id}', [VideoController::class, 'update'])->name('videos.update'); // PATCH
+    Route::delete('/{id}', [VideoController::class, 'destroy'])->name('videos.delete');
 });
 
 // Admin Users Routegroup
@@ -123,6 +117,7 @@ Route::prefix('/videos')->group(function () {
 Route::prefix('/users')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('users');
     Route::post('/', [UserController::class, 'store'])->name('users.register');
+    Route::post('/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.delete');
 });
 

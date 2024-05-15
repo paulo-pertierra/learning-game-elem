@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import TeacherLayout from '@/Layouts/TeacherLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
 
 const page = usePage();
@@ -9,7 +10,7 @@ const page = usePage();
 <template>
     <Head title="Dashboard" />
 
-    <AdminLayout>
+    <TeacherLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Administrator Dashboard</h2>
         </template>
@@ -33,5 +34,5 @@ const page = usePage();
                 </div>
             </div>
         </div>
-    </AdminLayout>
+    </TeacherLayout>
 </template>

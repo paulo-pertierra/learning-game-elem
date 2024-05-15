@@ -41,6 +41,22 @@ class UserController extends Controller
         return;
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'role' => ['required']
+        ]);
+
+        $user = User::find($id);
+
+        $user->role = $request->role;
+        if ($request->grade_level) $user->grade_level = $request->grade_level;
+
+        $user->save();
+
+        return;
+    }
+
     public function destroy($id) {
         $user = User::find($id);
         $user->delete();

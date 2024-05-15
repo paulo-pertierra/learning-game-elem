@@ -39,8 +39,22 @@ const addNewUser = () => {
     });
 }
 
+const currentUserId = ref(0);
+const editingUser = ref(false);
+
+const updateUser = () => {
+    (form.password as any) = null;
+    (form.password_confirmation as any) = null;
+    form.post(`/users/${currentUserId.value}`, {
+        onFinish: () => {
+            window.location.reload()
+        }
+    });
+}
+
 const closeModal = () => {
     addingNewUser.value = false;
+    editingUser.value = false;
 }
 
 const confirmingUserDeletion = ref(false);
@@ -64,7 +78,6 @@ const selectedUserId = ref("");
 
 watch(form, () => {
     console.log(form.grade_level);
-    
 })
 </script>
 
@@ -113,14 +126,15 @@ watch(form, () => {
                                 <td class="px-3 py-4 first-letter:uppercase">
                                     {{ user.role }}
                                 </td>
-                                <td v-if="user.grade_level" class="px-3 py-4 first-letter:uppercase">
+                                <td v-if="user.role != 'admin'" class="px-3 py-4 first-letter:uppercase">
                                     Grade {{ user.grade_level }}
                                 </td>
                                 <td v-else class="px-3 py-4 first-letter:uppercase">
-                                    None Assigned
+                                    None
                                 </td>
                                 <td class="px-3 py-4">
                                     <button
+                                        @click="editingUser = true, currentUserId = user.id"
                                         class="mr-2 text-orange-400 border-orange-400 border p-2 rounded-lg">Edit</button>
                                     <button v-if="user.id !== $page.props.auth.user.id"
                                         @click="confirmingUserDeletion = true, selectedUserId = user.id"
@@ -136,7 +150,7 @@ watch(form, () => {
         </div>
     </AdminLayout>
     <Modal :show="addingNewUser">
-        <form class="p-6" @submit.prevent="addNewUser">
+        <form name="create-user" class="p-6" @submit.prevent="addNewUser">
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                 Add New User
             </h2>
@@ -164,6 +178,43 @@ watch(form, () => {
                     v-model="form.password_confirmation" required autofocus />
                 <InputError :message="$page.props.errors.password_confirmation" />
             </div>
+            <div class="my-4 ">
+                <InputLabel>Role</InputLabel>
+                <div class="grid grid-cols-2 gap-2 py-2">
+                    <SecondaryButton :active="form.role === 'admin'" @click="form.role = 'admin'">Admin
+                    </SecondaryButton>
+                    <SecondaryButton :active="form.role === 'teacher'" @click="form.role = 'teacher'">Teacher
+                    </SecondaryButton>
+                    <InputError class="col-span-4"
+                        :message="$page.props.errors.role ? 'Quarter for this material is required.' : ''" />
+                </div>
+            </div>
+            <div class="my-4" v-if="form.role === 'teacher'">
+                <InputLabel>Grade Level</InputLabel>
+                <div class="grid grid-cols-3 gap-2 py-2">
+                    <SecondaryButton :active="form.grade_level == 1" @click="form.grade_level = 1">Grade 1
+                    </SecondaryButton>
+                    <SecondaryButton :active="form.grade_level == 2" @click="form.grade_level = 2">Grade 2
+                    </SecondaryButton>
+                    <SecondaryButton :active="form.grade_level == 3" @click="form.grade_level = 3">Grade 3
+                    </SecondaryButton>
+                    <InputError class="col-span-4"
+                        :message="$page.props.errors.grade_level ? 'Quarter for this material is required.' : ''" />
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                <PrimaryButton class="ms-3" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Register User
+                </PrimaryButton>
+            </div>
+        </form>
+    </Modal>
+    <Modal :show="editingUser">
+        <form name="edit-user" class="p-6" @submit.prevent="updateUser">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Edit User
+            </h2>
             <div class="my-4 ">
                 <InputLabel>Role</InputLabel>
                 <div class="grid grid-cols-2 gap-2 py-2">

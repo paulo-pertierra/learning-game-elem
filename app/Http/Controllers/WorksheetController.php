@@ -17,7 +17,9 @@ class WorksheetController extends Controller
      */
     public function index()
     {
+        $gradeLevel = Auth::user()->grade_level;
         $worksheets = Worksheet::orderBy('created_at', 'DESC')->paginate(6);
+        $worksheetsFiltered = Worksheet::where('grade_level', '=', $gradeLevel)->orderBy('created_at', 'DESC')->paginate(6);
 
         if (Auth::user()->role === 'admin')
             return Inertia::render('Admin/Worksheets', [
@@ -25,15 +27,8 @@ class WorksheetController extends Controller
             ]);
         else if (Auth::user()->role === 'teacher')
             return Inertia::render('Teacher/Worksheets', [
-                "worksheets" => $worksheets
+                "worksheets" => $worksheetsFiltered
             ]);
-        else
-            return Inertia::render(
-                'Student/Worksheets',
-                [
-                    "worksheets" => $worksheets
-                ]
-            );
     }
 
     /**

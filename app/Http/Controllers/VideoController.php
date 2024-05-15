@@ -14,7 +14,9 @@ class VideoController extends Controller
      */
     public function index()
     {
+        $gradeLevel = Auth::user()->grade_level;
         $videos = Video::orderBy('created_at', 'DESC')->paginate(6);
+        $videosFiltered = Video::where('grade_level', '=', $gradeLevel)->orderBy('created_at', 'DESC')->paginate(6);
 
         if (Auth::user()->role === 'admin')
             return Inertia::render('Admin/Videos', [
@@ -22,15 +24,8 @@ class VideoController extends Controller
             ]);
         else if (Auth::user()->role === 'teacher')
             return Inertia::render('Teacher/Videos', [
-                "videos" => $videos
+                "videos" => $videosFiltered
             ]);
-        else
-            return Inertia::render(
-                'Student/Videos',
-                [
-                    "videos" => $videos
-                ]
-            );
     }
 
     /**

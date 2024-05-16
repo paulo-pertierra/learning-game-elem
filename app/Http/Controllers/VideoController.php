@@ -72,7 +72,7 @@ class VideoController extends Controller
                 'video' => $video
             ]);
         else
-            return Inertia::render('Student/Videos/View', [
+            return Inertia::render('Teacher/Videos/View', [
                 'video' => $video
             ]);
     }

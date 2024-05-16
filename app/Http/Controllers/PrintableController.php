@@ -71,7 +71,7 @@ class PrintableController extends Controller
                 'printable' => $printable
             ]);
         else 
-            return Inertia::render('Student/Printables/View', [
+            return Inertia::render('Teacher/Printables/View', [
                 'printable' => $printable
             ]);
     }

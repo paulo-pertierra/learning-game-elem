@@ -72,7 +72,7 @@ class WorksheetController extends Controller
                 'worksheet' => $worksheet
             ]);
         else
-            return Inertia::render('Student/Worksheets/View', [
+            return Inertia::render('Teacher/Worksheets/View', [
                 'worksheet' => $worksheet
             ]);
     }

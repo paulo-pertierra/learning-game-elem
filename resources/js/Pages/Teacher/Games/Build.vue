@@ -54,8 +54,11 @@ const createGame = () => {
         game: game.value,
         questions: questions.value
     })
-    form.post("/games");
-    router.visit("/games");
+    form.post("/games", {
+        onFinish: () => {
+            router.visit("/games");
+        }
+    });
 }
 </script>
 <template>

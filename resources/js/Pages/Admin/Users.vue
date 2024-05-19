@@ -22,7 +22,7 @@ const form = useForm({
     password: "",
     password_confirmation: "",
     role: "teacher",
-    grade_level: 0
+    grade_level: 1
 });
 
 
@@ -191,7 +191,12 @@ watch(form, () => {
             </div> -->
             <div class="my-4" v-if="form.role === 'teacher'">
                 <InputLabel>Grade Level</InputLabel>
-                <div class="grid grid-cols-3 gap-2 py-2">
+                <select class="w-full g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="grade_level" v-model="form.grade_level" id="">
+                    <option :value="1">Grade 1</option>
+                    <option :value="2">Grade 2</option>
+                    <option :value="3">Grade 3</option>
+                </select>
+                <!-- <div class="grid grid-cols-3 gap-2 py-2">
                     <SecondaryButton :active="form.grade_level == 1" @click="form.grade_level = 1">Grade 1
                     </SecondaryButton>
                     <SecondaryButton :active="form.grade_level == 2" @click="form.grade_level = 2">Grade 2
@@ -200,7 +205,7 @@ watch(form, () => {
                     </SecondaryButton>
                     <InputError class="col-span-4"
                         :message="$page.props.errors.grade_level ? 'Quarter for this material is required.' : ''" />
-                </div>
+                </div> -->
             </div>
             <div class="mt-6 flex justify-end">
                 <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>

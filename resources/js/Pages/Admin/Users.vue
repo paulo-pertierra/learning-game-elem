@@ -21,7 +21,7 @@ const form = useForm({
     email: "",
     password: "",
     password_confirmation: "",
-    role: "",
+    role: "teacher",
     grade_level: 0
 });
 
@@ -178,7 +178,7 @@ watch(form, () => {
                     v-model="form.password_confirmation" required autofocus />
                 <InputError :message="$page.props.errors.password_confirmation" />
             </div>
-            <div class="my-4 ">
+            <!-- <div class="my-4 ">
                 <InputLabel>Role</InputLabel>
                 <div class="grid grid-cols-2 gap-2 py-2">
                     <SecondaryButton :active="form.role === 'admin'" @click="form.role = 'admin'">Admin
@@ -188,7 +188,7 @@ watch(form, () => {
                     <InputError class="col-span-4"
                         :message="$page.props.errors.role ? 'Quarter for this material is required.' : ''" />
                 </div>
-            </div>
+            </div> -->
             <div class="my-4" v-if="form.role === 'teacher'">
                 <InputLabel>Grade Level</InputLabel>
                 <div class="grid grid-cols-3 gap-2 py-2">

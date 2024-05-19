@@ -52,12 +52,12 @@ const worksheets = page.props.worksheets as any;
 <template>
     <div>
 
-        <Head title="Worksheets" />
+        <Head title="Modules" />
 
         <AdminLayout>
             <template #header>
                 <div class="flex items-center justify-between">
-                    <h2 class="font-semibold mr-2 text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheets</h2>
+                    <h2 class="font-semibold mr-2 text-xl text-gray-800 dark:text-gray-200 leading-tight">Modules</h2>
                 <form class="flex items-center gap-4 ml-2" action="">
                     <select
                         class="w-fit g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -81,15 +81,15 @@ const worksheets = page.props.worksheets as any;
             <div class="py-12">
                 <div class="max-w-7xl mx-auto px-6 lg:px-8">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheets List</h2>
-                        <PrimaryButton @click="addNewWorksheetModal">New Worksheet</PrimaryButton>
+                        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Modules List</h2>
+                        <PrimaryButton @click="addNewWorksheetModal">New Module</PrimaryButton>
                     </div>
                     <div v-if="!($page.props.worksheets as any).data.length" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900 dark:text-gray-100">
-                            In this page, you can add worksheets for your students. To add a worksheet, you can click
+                            In this page, you can add modules for your students. To add a module, you can click
                             the
                             add
-                            worksheet button, and upload a PDF document.
+                            module button, and upload a PDF document.
                         </div>
                     </div>
                     <div v-else>
@@ -111,16 +111,16 @@ const worksheets = page.props.worksheets as any;
             <Modal :show="addingNewWorksheet">
                 <form class="p-6" @submit.prevent="addNewWorksheet">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Add New Worksheet
+                        Add New Module
                     </h2>
                     <div class="my-4">
-                        <InputLabel>Worksheet Name</InputLabel>
+                        <InputLabel>Module Name</InputLabel>
                         <TextInput id="worksheet-name" type="text" class="mt-1 block w-full" v-model="form.title!"
                             required autofocus />
                             <InputError :message="$page.props.errors.title" />
                     </div>
                     <div class="my-4">
-                        <InputLabel>Worksheet Description</InputLabel>
+                        <InputLabel>Module Description</InputLabel>
                         <TextInput id="worksheet-description" type="text" class="mt-1 block w-full"
                             v-model="form.description!" required autofocus />
                         <InputError :message="$page.props.errors.description" />
@@ -153,7 +153,7 @@ const worksheets = page.props.worksheets as any;
                         <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
                         <PrimaryButton class="ms-3" :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing">
-                            Add New Worksheet
+                            Add New Module
                         </PrimaryButton>
                     </div>
                 </form>

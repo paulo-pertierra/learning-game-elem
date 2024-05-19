@@ -33,7 +33,7 @@ const showingNavigationDropdown = ref(false);
                                     Dashboard
                                 </NavLink>
                                 <NavLink :href="route('worksheets')" :active="route().current('worksheets')">
-                                    Worksheets
+                                    Modules
                                 </NavLink>
                                 <NavLink :href="route('games')" :active="route().current('games')">
                                     Games
@@ -133,7 +133,7 @@ const showingNavigationDropdown = ref(false);
 
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('worksheets')" :active="route().current('worksheets')">
-                            Worksheets
+                            Modules
                         </ResponsiveNavLink>
                     </div>
 

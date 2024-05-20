@@ -208,7 +208,7 @@ const printable = page.props.printable as any;
                 <div class="mt-6 flex justify-end">
                     <SecondaryButton @click="closePrintableEditor"> Cancel </SecondaryButton>
                     <PrimaryButton class="ms-3" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        Add New Printable
+                        Edit Worksheet
                     </PrimaryButton>
                 </div>
             </form>

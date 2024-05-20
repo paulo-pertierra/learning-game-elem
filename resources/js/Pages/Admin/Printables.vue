@@ -52,12 +52,12 @@ const printables = page.props.printables as any;
 <template>
     <div>
 
-        <Head title="Printable Documents" />
+        <Head title="Worksheet Documents" />
 
         <AdminLayout>
             <template #header>
                 <div class="flex items-center justify-between">
-                    <h2 class="font-semibold mr-2 text-xl text-gray-800 dark:text-gray-200 leading-tight">Printable Documents</h2>
+                    <h2 class="font-semibold mr-2 text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheet Documents</h2>
                     <form class="flex items-center gap-4 ml-2" action="">
                         <select
                         class="w-fit g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -80,15 +80,15 @@ const printables = page.props.printables as any;
             <div class="py-12">
                 <div class="max-w-7xl mx-auto px-6 lg:px-8">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Printable Documents List</h2>
-                        <PrimaryButton @click="addNewPrintableModal">New Printable</PrimaryButton>
+                        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Worksheet Documents List</h2>
+                        <PrimaryButton @click="addNewPrintableModal">New Worksheet</PrimaryButton>
                     </div>
                     <div v-if="!($page.props.printables as any).data.length" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900 dark:text-gray-100">
                             In this page, you can add documents for your students. To add a worksheet, you can click
                             the
                             new
-                            printable button, and upload a PDF document.
+                            worksheet button, and upload a PDF document.
                         </div>
                     </div>
                     <div v-else>
@@ -110,16 +110,16 @@ const printables = page.props.printables as any;
             <Modal :show="addingNewPrintable">
                 <form class="p-6" @submit.prevent="addNewPrintable">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Add New Printable Document
+                        Add New Worksheet Document
                     </h2>
                     <div class="my-4">
-                        <InputLabel>Document Name</InputLabel>
+                        <InputLabel>Worksheet Name</InputLabel>
                         <TextInput id="document-name" type="text" class="mt-1 block w-full" v-model="form.title!"
                             required autofocus />
                             <InputError :message="$page.props.errors.title" />
                     </div>
                     <div class="my-4">
-                        <InputLabel>Document Description</InputLabel>
+                        <InputLabel>Worksheet Description</InputLabel>
                         <TextInput id="document-description" type="text" class="mt-1 block w-full"
                             v-model="form.description!" required autofocus />
                         <InputError :message="$page.props.errors.description" />
@@ -152,7 +152,7 @@ const printables = page.props.printables as any;
                         <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
                         <PrimaryButton class="ms-3" :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing">
-                            Add New Printable
+                            Add New Worksheet
                         </PrimaryButton>
                     </div>
                 </form>

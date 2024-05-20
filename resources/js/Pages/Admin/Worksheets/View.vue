@@ -139,7 +139,7 @@ watch(form, () => {
         <Modal :show="confirmingWorksheetDeletion" @close="closeWorksheetDeletionModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Are you sure you want to delete this worksheet?
+                    Are you sure you want to delete this module?
                 </h2>
 
                 <div class="mt-6 flex justify-end">
@@ -151,7 +151,7 @@ watch(form, () => {
                         :disabled="deleteProcessing"
                         @click="deleteWorksheet"
                     >
-                        Delete Worksheet
+                        Delete Module
                     </DangerButton>
                 </div>
             </div>
@@ -159,16 +159,16 @@ watch(form, () => {
         <Modal :show="showingWorksheetEditor">
             <form class="p-6" @submit.prevent="updateWorksheet">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Add New Worksheet
+                        Edit Module
                     </h2>
                     <div class="my-4">
-                        <InputLabel>Worksheet Name</InputLabel>
+                        <InputLabel>Module Name</InputLabel>
                         <TextInput id="worksheet-name" type="text" class="mt-1 block w-full" v-model="form.title!"
                             required autofocus />
                             <InputError :message="$page.props.errors.title" />
                     </div>
                     <div class="my-4">
-                        <InputLabel>Worksheet Description</InputLabel>
+                        <InputLabel>Module Description</InputLabel>
                         <TextInput id="worksheet-description" type="text" class="mt-1 block w-full"
                             v-model="form.description!" required autofocus />
                         <InputError :message="$page.props.errors.description" />
@@ -201,7 +201,7 @@ watch(form, () => {
                         <SecondaryButton @click="closeWorksheetEditor"> Cancel </SecondaryButton>
                         <PrimaryButton class="ms-3" :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing">
-                            Add New Worksheet
+                            Edit Module
                         </PrimaryButton>
                     </div>
                 </form>
